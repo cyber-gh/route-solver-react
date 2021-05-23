@@ -1,0 +1,71 @@
+@import "../../styles/variables.scss";
+
+div.home {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    font-size: 18px;
+    position: relative;
+
+    .panel {
+        width: 500px;
+        height: 100%;
+        position: absolute;
+        z-index: 2;
+        background-color: $bg;
+        
+        .title, .actions {
+            width: 100%;
+            color: white;
+            padding: 20px;
+        }
+
+        .title {
+            background-color: $primary-dark;
+        }
+
+        .actions {
+            background-color: $primary-light;
+
+            a {
+                cursor: pointer;
+                font-weight: 600;
+                font-size: 0.8em;
+                color: white;
+                padding: 10px 15px;
+                border-radius: 6px;
+                margin: 0 10px;
+                transition: box-shadow 0.3s;
+                background-color: $bg-light;
+
+                &:nth-of-type(1) {
+                    margin-left: 0;
+                }
+
+                &:hover {
+                    box-shadow: 0 0 15px $primary-superdark;
+                }
+            }
+        }
+
+        .drivers {
+            font-size: 0.7em;
+            display: grid;
+            grid-template-columns: auto auto auto;
+            color: $secondary;
+
+            .label {
+                background-color: $primary-dark;
+                padding: 20px;
+            }
+        }
+    }
+
+    .map {
+        width: 100%;
+        img {
+            width: 100%;
+            height: 100%;
+        }
+    }
+}
