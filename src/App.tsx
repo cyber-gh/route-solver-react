@@ -5,6 +5,9 @@ import history from "./utils/history";
 import Home from "./views/Home/Home";
 import LeftPanel from "./views/Menus/LeftPanel";
 import Background from "./Background";
+import AddDriver from "./views/AddDriver/AddDriver";
+import placeholder from "./assets/map_placeholder.png";
+import "./App.scss";
 
 interface RouteData {
   path: string, 
@@ -39,10 +42,18 @@ const App = () => {
       <Background/>
       <LeftPanel/>
       <div className = "content">
-        <Switch>
-          <CustomRoute path = "/" condition = {true} component = {Home}/>
-          <Redirect from = "*" to = "/"/>
-        </Switch>
+        <div className = "menu">
+          <div className="panel">
+            <Switch>
+              <CustomRoute path = "/home" condition = {true} component = {Home}/>
+              <CustomRoute path = "/add-driver/:type" condition = {true} component = {AddDriver}/>
+              <Redirect from = "*" to = "/home"/>
+            </Switch>
+          </div>
+          <div className="map">
+              <img src = {placeholder}/>
+          </div> 
+        </div>
       </div>
     </Router>
   );

@@ -10,6 +10,7 @@ div.left-panel {
     height: 100vh;
     padding: 25px 0 0 0;
     box-shadow: 0 0 10px $primary;
+    z-index: 3;
 
     > div {
         width: 100%;
@@ -39,16 +40,17 @@ div.left-panel {
         }
 
 
-        &:hover {
+        &:hover[aria-label] {
             background-color: $primary;
             &::after {
                 content: attr(aria-label);
+                display: flex;
                 position: absolute;
                 padding: 10px;
                 background-color: $primary;
                 color: $bg;
                 border-radius: 8px;
-                right: -140%;
+                right: -145%;
                 z-index: 10;
             }
         }

@@ -1,0 +1,52 @@
+@import "../../styles/variables.scss";
+
+div.add-driver {
+    .title, .actions {
+        width: 100%;
+        color: white;
+        padding: 20px;
+    }
+
+    .title {
+        background-color: $primary-dark;
+    }
+
+    .form {
+        display: flex;
+        flex-direction: column;
+        padding: 30px;
+        height: 100%;
+        
+        .input-box {
+            display: flex;
+            flex-direction: column;
+            font-size: 1.2em;
+            margin: 15px 0;
+            p {
+                color: $secondary;
+                margin: 0 0 12px 3px;
+            }
+            input {
+                font-size: 0.75em;
+                border: 2px solid $primary;
+                background-color: $bg;
+                padding: 10px;
+                border-radius: 5px;
+                color: $secondary;
+                transition: box-shadow 0.2s;
+
+                &:hover {
+                    box-shadow: 0 0 5px $primary;
+                }
+
+                &:focus {
+                    box-shadow: 0 0 12px $primary;
+                }
+            }
+        }
+        
+        .btn {
+            margin-top: 30px;
+        }
+    }
+}

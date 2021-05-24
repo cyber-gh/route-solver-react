@@ -46,3 +46,26 @@ code {
 html.theme--dark {
   background-color: $bg;
 }
+
+.btn {
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 1em;
+  border: 2px solid $primary;
+  background-color: $bg;
+  color: $secondary;
+  padding: 15px;
+  border-radius: 12px;
+  transition: background-color 0.2s, color 0.2s, box-shadow 0.2s, transform 0.2s;
+
+  &:hover {
+    background-color: $primary;
+    color: $bg;
+    box-shadow: 0 0 8px $primary;
+  }
+  
+  &:active {
+    box-shadow: 0 0 12px $primary;
+    transform: translateY(3px);
+  }
+}

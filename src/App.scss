@@ -1,0 +1,25 @@
+@import "./styles/variables.scss";
+
+div.menu {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    font-size: 18px;
+    position: relative;
+
+    .panel {
+        width: 500px;
+        height: 100%;
+        position: absolute;
+        z-index: 2;
+        background-color: $bg;
+    }
+
+    .map {
+        width: 100%;
+        img {
+            width: 100%;
+            height: 100%;
+        }
+    }
+}
