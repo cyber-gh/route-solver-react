@@ -1,16 +1,15 @@
-interface Driver {
-    name: string,
-    address: string,
-    shift: string;
+interface Unique {
+    id: string
 }
 
-interface DriverForm {
+interface Driver extends Unique {
     name: string,
     email: string,
     location: string,
     weight?: string,
     volume?: string,
-    schedule?: string
+    schedule_begin?: string,
+    schedule_end?: string,
 }
 
-export type {Driver, DriverForm};
+export type { Driver, Unique};

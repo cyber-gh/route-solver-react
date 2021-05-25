@@ -12,8 +12,8 @@ const LeftPanel = (props: Props) => {
     return (
         <div className = "left-panel">
             <div>
-                <Link to = '/'>
-                    <img src = {Logo}/>
+                <Link to = '/' className = "first">
+                    <i className = "fas fa-car"></i>
                 </Link>
                 <Link aria-label = "Routes" to = "/routes">
                     <i className ="fas fa-route"></i>

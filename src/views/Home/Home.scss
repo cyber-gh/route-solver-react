@@ -38,10 +38,10 @@ div.home {
     .drivers {
         font-size: 0.7em;
         display: grid;
-        grid-template-columns: auto auto auto;
+        grid-template-columns: 20px auto auto auto;
         color: $secondary;
 
-        & > *{
+        & > * {
             text-align: center;
         }
 
@@ -53,6 +53,12 @@ div.home {
         .data {
             font-size: 1.2em;
             padding: 20px;
+        }
+
+        i {
+            cursor: pointer;
+            color: rgb(255, 51, 0);
+            font-size: 1.5em !important;
         }
     }
 }

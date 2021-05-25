@@ -43,6 +43,23 @@ div.add-driver {
                     box-shadow: 0 0 12px $primary;
                 }
             }
+
+            input[type="time"]::-webkit-calendar-picker-indicator {
+                filter: invert(87%) sepia(45%) saturate(531%) hue-rotate(100deg) brightness(106%) contrast(98%);
+            }
+
+            &.dual {
+                flex-direction: row;
+                div {
+                    display: flex;
+                    flex-direction: column;
+                    flex-grow: 1;
+
+                    &:nth-of-type(1) {
+                        margin-right: 30px;
+                    }
+                }
+            }
         }
         
         .btn {
