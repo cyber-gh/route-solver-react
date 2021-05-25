@@ -69,3 +69,19 @@ html.theme--dark {
     transform: translateY(3px);
   }
 }
+
+/* width */
+*::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+/* Track */
+*::-webkit-scrollbar-track {
+  background: $bg;
+}
+
+/* Handle */
+*::-webkit-scrollbar-thumb {
+  background: $primary;
+}
