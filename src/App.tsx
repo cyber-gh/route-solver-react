@@ -8,8 +8,11 @@ import Background from "./Background";
 import AddDriver from "./views/AddDriver/AddDriver";
 import placeholder from "./assets/map_placeholder.png";
 import "./App.scss";
+import usePersistentState from "./utils/usePersistentState";
+import EditDriver from "./views/AddDriver/EditDriver";
 
 interface RouteData {
+  [key: string]: any
   path: string, 
   component: any,
   condition?: boolean,
@@ -17,17 +20,18 @@ interface RouteData {
   props?: object
 }
 
-const CustomRoute = ({path, condition, redirectUrl, component: Component}: RouteData) => {
+const CustomRoute = ({path, condition, redirectUrl, component: Component, ...other}: RouteData) => {
 	if (!condition) {
 		return <Redirect exact from = {path} to = {redirectUrl as string}/>
 	}
 	return (
-		<Route exact path = {path} render = {(props: any) => <Component {...props}/>}/>
+		<Route exact path = {path} render = {(props: any) => <Component {...other} {...props}/>}/>
 	)
 }
 
 const App = () => {
   const { isLoading, error } = useAuth0();
+  const [open, setOpen] = usePersistentState("left-panel", false);
 
   if (error) {
     return <div>Oops... {error.message}</div>;
@@ -43,12 +47,18 @@ const App = () => {
       <LeftPanel/>
       <div className = "content">
         <div className = "menu">
-          <div className="panel">
-            <Switch>
-              <CustomRoute path = "/home" condition = {true} component = {Home}/>
-              <CustomRoute path = "/add-driver/:type" condition = {true} component = {AddDriver}/>
-              <Redirect from = "*" to = "/home"/>
-            </Switch>
+          <div className = {`outer-panel ${open ? "open" : "closed"}`}>
+            <div className = "control" onClick = {() => setOpen(!open)}>
+              <i className ="fas fa-chevron-right"></i>
+            </div>
+            <div className="panel">
+              <Switch>
+                <CustomRoute open = {() => setOpen(true)} path = "/home" condition = {true} component = {Home}/>
+                <CustomRoute open = {() => setOpen(true)} path = "/add-driver/:type" condition = {true} component = {AddDriver}/>
+                <CustomRoute open = {() => setOpen(true)} path = "/edit-driver/:id" condition = {true} component = {EditDriver}/>
+                <Redirect from = "*" to = "/home"/>
+              </Switch>
+            </div>
           </div>
           <div className="map">
               <img src = {placeholder}/>

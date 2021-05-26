@@ -7,12 +7,14 @@ interface Props {
     drivers: Driver[],
     addDriver: (x: Driver) => void,
     removeDriver: (id: string) => void,
+    updateDriver: (id: string, x: Driver) => void,
 }
 
 export const DriverContext = React.createContext <Props> ({
     drivers: [],
     addDriver: () => null,
     removeDriver: () => null,
+    updateDriver: (id: string, x: Driver) => null
 });
 
 
@@ -30,12 +32,18 @@ export const DriverProvider = ({ children, ...props }: {children: any}) => {
         setDrivers(temp);
     }
 
+    const updateDriver = (id: string, x: Driver) => {
+        let temp = drivers.map(it => it.id === id ? x: it);
+        setDrivers(temp);
+    }
+
     return (
         <DriverContext.Provider
             value={{ 
                 drivers,
                 addDriver,
-                removeDriver
+                removeDriver,
+                updateDriver
             }}
         >
             {children}

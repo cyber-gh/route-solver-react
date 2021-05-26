@@ -2,6 +2,8 @@
 
 div.home {
     .title, .actions {
+        position: sticky;
+        top: 0;
         width: 100%;
         color: white;
         padding: 20px;
@@ -38,27 +40,47 @@ div.home {
     .drivers {
         font-size: 0.7em;
         display: grid;
-        grid-template-columns: 20px auto auto auto;
+        grid-template-columns: fit-content(35%) fit-content(30%) fit-content(25%) 60px 60px;
         color: $secondary;
 
         & > * {
             text-align: center;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .label {
             background-color: $primary-dark;
-            padding: 20px;
+            padding: 20px 10px;
         }
 
         .data {
+            white-space: break-word;
+            align-self: center;
             font-size: 1.2em;
-            padding: 20px;
+            padding: 20px 10px;
+        }
+
+        .oneline {
+            white-space: nowrap;
+        }
+
+        .i-data {
+            cursor: pointer;
         }
 
         i {
+            align-self: center;
+            width: 25px;
+            height: 25px;
             cursor: pointer;
             color: rgb(255, 51, 0);
-            font-size: 1.5em !important;
+            text-align: center;
+            font-size: 1.5em;
+
+            &.fa-edit {
+                color: $primary;
+            }
         }
     }
 }

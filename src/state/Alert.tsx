@@ -13,7 +13,7 @@ interface Props {
 
 export const AlertContext = React.createContext<Props>({
     setAlert: () => null,
-});
+}); 
 
 export const AlertProvider = ({ children, ...props } : {children: any}) => {
     const [data, setData] = useState<SnackbarMessage | null>(null);

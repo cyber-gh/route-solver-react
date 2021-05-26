@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import usePersistentState from '../../utils/usePersistentState';
 import "./AddDriver.scss";
 import { Driver } from '../../utils/types';
@@ -22,25 +22,18 @@ const defaultData: Driver = {
     id: "",
 }
 
-const AddDriver = (props: Props) => {
-    const type = props.match.params.type === "advanced" ? "Advanced" : "Basic";
-    const [form, setForm, forceSetForm] = usePersistentState <Driver> ("add-driver", defaultData);
+const EditDriver = (props: Props) => {
+    const id = props.match.params.id;
+    const [form, setForm] = useState <Driver> (defaultData);
     const {setAlert} = useContext(AlertContext);
-    const {addDriver} = useContext(DriverContext);
+    const {drivers, updateDriver} = useContext(DriverContext);
 
     useEffect(props.open, []);
 
     useEffect(() => {
-        if (type === "Basic" && (form.weight || form.volume || form.schedule_begin || form.schedule_end)) {
-            forceSetForm({
-                ...form,
-                weight: "",
-                volume: "",
-                schedule_begin: "",
-                schedule_end: "",
-            })
-        }
-    }, [form])
+        let [driver] = drivers.filter(x => x.id === id);
+        setForm(driver);
+    }, [])
 
     const updateForm = (key: string) => (e: any) => {
         setForm({
@@ -68,15 +61,15 @@ const AddDriver = (props: Props) => {
             ...form,
             id: getUniqueId()
         }
-        addDriver(driver);
-        setAlert({type: "success", message: "Driver added successfully."})
+        updateDriver(id, form);
+        setAlert({type: "success", message: "Driver edited successfully."})
         props.history.push("/");
     }
 
     return (
         <div className="add-driver">
             <div className="title">
-                Add Drivers ({type})
+                Edit Driver
             </div>
             <div className = "form">
                 <div className = "input-box">
@@ -91,34 +84,30 @@ const AddDriver = (props: Props) => {
                     <p>Location:   * </p>
                     <input value = {form.location} placeholder = "Bucharest, Romania" onChange = {updateForm("location")}/>
                 </div>
-                {type == 'Advanced' &&
-                    <>
-                        <div className = "input-box">
-                            <p>Weight: </p>
-                            <input value = {form.weight} placeholder = "5000 kg" onChange = {updateForm("weight")}/>
-                        </div>
-                        <div className = "input-box">
-                            <p>Volume: </p>
-                            <input value = {form.volume} placeholder = "5000 m^3" onChange = {updateForm("volume")}/>
-                        </div>
-                        <div className = "input-box dual">
-                            <div>
-                                <p>Schedule start: </p>
-                                <input type = "time" value = {form.schedule_begin} onChange = {updateForm("schedule_begin")}/>
-                            </div>
-                            <div>
-                                <p>Schedule end: </p>
-                                <input type = "time" value = {form.schedule_end} onChange = {updateForm("schedule_end")}/>
-                            </div>
-                        </div>
-                    </>
-                }
+                <div className = "input-box">
+                    <p>Weight: </p>
+                    <input value = {form.weight} placeholder = "5000 kg" onChange = {updateForm("weight")}/>
+                </div>
+                <div className = "input-box">
+                    <p>Volume: </p>
+                    <input value = {form.volume} placeholder = "5000 m^3" onChange = {updateForm("volume")}/>
+                </div>
+                <div className = "input-box dual">
+                    <div>
+                        <p>Schedule start: </p>
+                        <input type = "time" value = {form.schedule_begin} onChange = {updateForm("schedule_begin")}/>
+                    </div>
+                    <div>
+                        <p>Schedule end: </p>
+                        <input type = "time" value = {form.schedule_end} onChange = {updateForm("schedule_end")}/>
+                    </div>
+                </div>
                 <button className = "btn" onClick = {handleClick}>
-                    Add Driver
+                    Edit Driver
                 </button>
             </div>
         </div>
     );
 }
 
- export default AddDriver;
+ export default EditDriver;
