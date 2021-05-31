@@ -8,6 +8,7 @@ import history from "./utils/history";
 import { getConfig } from "./config";
 import { AlertProvider } from "./state/Alert";
 import { DriverProvider } from "./state/DriverContext";
+import { ClientProvider } from "./state/ClientContext";
 
 
 const onRedirectCallback = (appState: any) => {
@@ -32,7 +33,9 @@ ReactDOM.render(
   <Auth0Provider {...providerConfig}>
     <AlertProvider>
       <DriverProvider>
-        <App />
+        <ClientProvider>
+          <App />
+        </ClientProvider>
       </DriverProvider>
     </AlertProvider>
   </Auth0Provider>,

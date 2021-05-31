@@ -4,10 +4,11 @@ import Logo from "../../assets/logo.png"
 import { Link } from 'react-router-dom';
 
 export interface Props {
-    [key: string]: any
+    [key: string]: any,
+    toggleColorMode: () => void
 }
 
-const LeftPanel = (props: Props) => {
+const LeftPanel = ({toggleColorMode}: Props) => {
 
     return (
         <div className = "left-panel">
@@ -23,6 +24,9 @@ const LeftPanel = (props: Props) => {
                 </Link>
             </div>
             <div>
+                <a onClick = {toggleColorMode} className = "click">
+                    <i className ="far fa-lightbulb"></i>
+                </a>
                 <Link aria-label = "Log out" to = "/logout">
                     <i className ="fas fa-sign-out-alt"></i>
                 </Link>

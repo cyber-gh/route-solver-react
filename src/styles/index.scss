@@ -43,32 +43,6 @@ code {
     monospace;
 }
 
-html.theme--dark {
-  background-color: $bg;
-}
-
-.btn {
-  font-weight: 600;
-  cursor: pointer;
-  font-size: 1em;
-  border: 2px solid $primary;
-  background-color: $bg;
-  color: $secondary;
-  padding: 15px;
-  border-radius: 12px;
-  transition: background-color 0.2s, color 0.2s, box-shadow 0.2s, transform 0.2s;
-
-  &:hover {
-    background-color: $primary;
-    color: $bg;
-    box-shadow: 0 0 8px $primary;
-  }
-  
-  &:active {
-    box-shadow: 0 0 12px $primary;
-    transform: translateY(3px);
-  }
-}
 
 /* width */
 *::-webkit-scrollbar {
@@ -78,10 +52,45 @@ html.theme--dark {
 
 /* Track */
 *::-webkit-scrollbar-track {
-  background: $bg;
+  background: var(--bg);
 }
 
 /* Handle */
 *::-webkit-scrollbar-thumb {
-  background: $primary;
+  background: var(--primary);
+}
+
+html.theme--dark {
+  @include spread-map($theme-map-dark);
+}
+
+html.theme--light {
+  @include spread-map($theme-map-light);
+}
+
+.btn {
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 1em;
+  border: 2px solid var(--primary);
+  background-color: var(--bg);
+  color: var(--secondary);
+  padding: 15px;
+  border-radius: 12px;
+  transition: background-color 0.2s, color 0.2s, box-shadow 0.2s, transform 0.2s;
+
+  &:hover {
+    background-color: var(--primary);
+    color: var(--bg);
+    box-shadow: 0 0 8px var(--primary);
+  }
+  
+  &:active {
+    box-shadow: 0 0 12px var(--primary);
+    transform: translateY(3px);
+  }
+}
+
+* {
+  transition: color 0.2s, background-color 0.2s, box-shadow 0.2s;
 }

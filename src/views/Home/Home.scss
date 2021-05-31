@@ -10,29 +10,29 @@ div.home {
     }
 
     .title {
-        background-color: $primary-dark;
+        background-color: var(--primary-dark);
     }
 
     .actions {
-        background-color: $primary-light;
+        background-color: var(--primary-light);
 
         a {
             cursor: pointer;
             font-weight: 600;
             font-size: 0.8em;
-            color: white;
+            color: var(--secondary);
             padding: 10px 15px;
             border-radius: 6px;
             margin: 0 10px;
             transition: box-shadow 0.3s;
-            background-color: $bg-light;
+            background-color: var(--bg-light);
 
             &:nth-of-type(1) {
                 margin-left: 0;
             }
 
             &:hover {
-                box-shadow: 0 0 15px $primary-superdark;
+                box-shadow: 0 0 15px var(--primary-superdark);
             }
         }
     }
@@ -40,8 +40,8 @@ div.home {
     .drivers {
         font-size: 0.7em;
         display: grid;
-        grid-template-columns: fit-content(35%) fit-content(30%) fit-content(25%) 60px 60px;
-        color: $secondary;
+        grid-template-columns: minmax(20px, auto) minmax(20px, auto) minmax(20px, auto) 60px 60px;
+        color: var(--secondary);
 
         & > * {
             text-align: center;
@@ -50,7 +50,7 @@ div.home {
         }
 
         .label {
-            background-color: $primary-dark;
+            background-color: var(--primary-dark);
             padding: 20px 10px;
         }
 
@@ -79,7 +79,7 @@ div.home {
             font-size: 1.5em;
 
             &.fa-edit {
-                color: $primary;
+                color: var(--primary);
             }
         }
     }

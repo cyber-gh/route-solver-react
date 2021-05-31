@@ -10,6 +10,9 @@ import placeholder from "./assets/map_placeholder.png";
 import "./App.scss";
 import usePersistentState from "./utils/usePersistentState";
 import EditDriver from "./views/AddDriver/EditDriver";
+import Clients from "./views/Clients/Clients";
+import AddClient from "./views/Clients/AddClient";
+import EditClient from "./views/Clients/EditClient";
 
 interface RouteData {
   [key: string]: any
@@ -31,6 +34,7 @@ const CustomRoute = ({path, condition, redirectUrl, component: Component, ...oth
 
 const App = () => {
   const { isLoading, error } = useAuth0();
+  const [mode, setMode] = usePersistentState("mode", "theme--dark");
   const [open, setOpen] = usePersistentState("left-panel", false);
 
   if (error) {
@@ -41,10 +45,19 @@ const App = () => {
     return <div>loading blea</div>
   }
 
+  const toggleColorMode = () => {
+    if (mode == "theme--dark") {
+      setMode("theme--light");
+    }
+    else {
+      setMode("theme--dark");
+    }
+  }
+
   return (
     <Router history={history}>
-      <Background/>
-      <LeftPanel/>
+      <Background type = {mode}/>
+      <LeftPanel toggleColorMode = {toggleColorMode} />
       <div className = "content">
         <div className = "menu">
           <div className = {`outer-panel ${open ? "open" : "closed"}`}>
@@ -56,6 +69,9 @@ const App = () => {
                 <CustomRoute open = {() => setOpen(true)} path = "/home" condition = {true} component = {Home}/>
                 <CustomRoute open = {() => setOpen(true)} path = "/add-driver/:type" condition = {true} component = {AddDriver}/>
                 <CustomRoute open = {() => setOpen(true)} path = "/edit-driver/:id" condition = {true} component = {EditDriver}/>
+                <CustomRoute open = {() => setOpen(true)} path = "/clients" condition = {true} component = {Clients}/>
+                <CustomRoute open = {() => setOpen(true)} path = "/add-client/:type" condition = {true} component = {AddClient}/>
+                <CustomRoute open = {() => setOpen(true)} path = "/edit-client/:id" condition = {true} component = {EditClient}/>
                 <Redirect from = "*" to = "/home"/>
               </Switch>
             </div>

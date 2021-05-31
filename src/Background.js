@@ -1,10 +1,10 @@
 import React from 'react'
 import {Helmet} from "react-helmet";
 
-const Background = () => {
+const Background = ({type}) => {
     return (
         <Helmet>
-            <html className = "theme--dark"/>
+            <html className = {type}/>
         </Helmet>
     );
 }

@@ -32,7 +32,7 @@ div.menu {
         right: 0;
         z-index: 10;
         padding: 10px 15px;
-        background-color: $primary-dark;
+        background-color: var(--primary-dark);
         transition: right 0.2s;
 
         i {
@@ -40,7 +40,7 @@ div.menu {
             transform: rotate(180deg);
             text-align: end;
             font-size: 41px;
-            color: $bg;
+            color: var(--bg);
         }
     }
 
@@ -51,7 +51,7 @@ div.menu {
         max-height: 100%;
         position: absolute;
         z-index: 2;
-        background-color: $bg;
+        background-color: var(--bg);
     }
 
     .map {

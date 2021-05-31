@@ -12,4 +12,13 @@ interface Driver extends Unique {
     schedule_end?: string,
 }
 
-export type { Driver, Unique};
+interface Client extends Unique {
+    name: string,
+    email: string,
+    address: string,
+    time_begin?: string,
+    time_end?: string,
+    weight: string
+}
+
+export type {Client, Driver, Unique};

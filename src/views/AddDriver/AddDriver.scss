@@ -10,7 +10,7 @@ div.add-driver {
     }
 
     .title {
-        background-color: $primary-dark;
+        background-color: var(--primary-dark);
     }
 
     .form {
@@ -25,24 +25,24 @@ div.add-driver {
             font-size: 1.2em;
             margin: 15px 0;
             p {
-                color: $secondary;
+                color: var(--secondary);
                 margin: 0 0 12px 3px;
             }
             input {
                 font-size: 0.75em;
-                border: 2px solid $primary;
-                background-color: $bg;
+                border: 2px solid var(--primary);
+                background-color: var(--bg);
                 padding: 10px;
                 border-radius: 5px;
-                color: $secondary;
+                color: var(--secondary);
                 transition: box-shadow 0.2s;
 
                 &:hover {
-                    box-shadow: 0 0 5px $primary;
+                    box-shadow: 0 0 5px var(--primary);
                 }
 
                 &:focus {
-                    box-shadow: 0 0 12px $primary;
+                    box-shadow: 0 0 12px var(--primary);
                 }
             }
 
