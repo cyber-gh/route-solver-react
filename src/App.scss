@@ -32,7 +32,7 @@ div.menu {
         right: 0;
         z-index: 10;
         padding: 10px 15px;
-        background-color: var(--primary-dark);
+        background-color: var(--bg-light);
         transition: right 0.2s;
 
         i {
@@ -40,7 +40,7 @@ div.menu {
             transform: rotate(180deg);
             text-align: end;
             font-size: 41px;
-            color: var(--bg);
+            color: var(--secondary);
         }
     }
 

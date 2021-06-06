@@ -5,12 +5,12 @@ div.add-driver {
         position: sticky;
         top: 0;
         width: 100%;
-        color: white;
+        color: var(--secondary);
         padding: 20px;
     }
 
     .title {
-        background-color: var(--primary-dark);
+        background-color: var(--bg-light);
     }
 
     .form {
@@ -30,7 +30,7 @@ div.add-driver {
             }
             input {
                 font-size: 0.75em;
-                border: 2px solid var(--primary);
+                border: 2px solid var(--bg-light);
                 background-color: var(--bg);
                 padding: 10px;
                 border-radius: 5px;
