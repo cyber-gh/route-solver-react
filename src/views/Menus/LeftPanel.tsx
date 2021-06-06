@@ -2,6 +2,7 @@ import React from 'react'
 import "./LeftPanel.scss";
 import Logo from "../../assets/logo.png"
 import { Link } from 'react-router-dom';
+import {useAuth0} from "@auth0/auth0-react";
 
 export interface Props {
     [key: string]: any,
@@ -9,6 +10,8 @@ export interface Props {
 }
 
 const LeftPanel = ({toggleColorMode}: Props) => {
+
+    const { logout } = useAuth0();
 
     return (
         <div className = "left-panel">
@@ -27,9 +30,11 @@ const LeftPanel = ({toggleColorMode}: Props) => {
                 <a onClick = {toggleColorMode} className = "click">
                     <i className ="far fa-lightbulb"></i>
                 </a>
-                <Link aria-label = "Log out" to = "/logout">
+                <a aria-label = "Log out" onClick={() =>{
+                    logout({returnTo: "http://localhost:3001"})
+                } }>
                     <i className ="fas fa-sign-out-alt"></i>
-                </Link>
+                </a>
                 <Link aria-label = "Profile" to = "/profile">
                     <i className="fas fa-id-badge"></i>
                 </Link>

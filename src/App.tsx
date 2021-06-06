@@ -33,7 +33,7 @@ const CustomRoute = ({path, condition, redirectUrl, component: Component, ...oth
 }
 
 const App = () => {
-  const { isLoading, error } = useAuth0();
+  const { isAuthenticated, isLoading, error, loginWithRedirect } = useAuth0();
   const [mode, setMode] = usePersistentState("mode", "theme--dark");
   const [open, setOpen] = usePersistentState("left-panel", false);
 
@@ -43,6 +43,12 @@ const App = () => {
 
   if (isLoading) {
     return <div>loading blea</div>
+  }
+
+  if (!isAuthenticated) {
+    loginWithRedirect();
+
+    return <div>Redirecting</div>
   }
 
   const toggleColorMode = () => {
@@ -72,6 +78,7 @@ const App = () => {
                 <CustomRoute open = {() => setOpen(true)} path = "/clients" condition = {true} component = {Clients}/>
                 <CustomRoute open = {() => setOpen(true)} path = "/add-client/:type" condition = {true} component = {AddClient}/>
                 <CustomRoute open = {() => setOpen(true)} path = "/edit-client/:id" condition = {true} component = {EditClient}/>
+                <Redirect from = "/logout" to = "/landing"/>
                 <Redirect from = "*" to = "/home"/>
               </Switch>
             </div>
