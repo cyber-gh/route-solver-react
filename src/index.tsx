@@ -10,6 +10,8 @@ import { AlertProvider } from "./state/Alert";
 import { DriverProvider } from "./state/DriverContext";
 import { ClientProvider } from "./state/ClientContext";
 
+require('dotenv').config()
+
 
 const onRedirectCallback = (appState: any) => {
   history.push(

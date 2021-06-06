@@ -13,6 +13,7 @@ import EditDriver from "./views/AddDriver/EditDriver";
 import Clients from "./views/Clients/Clients";
 import AddClient from "./views/Clients/AddClient";
 import EditClient from "./views/Clients/EditClient";
+import MainMapView from "./views/Map/MainMapView";
 
 interface RouteData {
   [key: string]: any
@@ -84,7 +85,7 @@ const App = () => {
             </div>
           </div>
           <div className="map">
-              <img src = {placeholder}/>
+              <MainMapView/>
           </div> 
         </div>
       </div>
