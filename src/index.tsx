@@ -9,6 +9,8 @@ import { getConfig } from "./config";
 import { AlertProvider } from "./state/Alert";
 import { DriverProvider } from "./state/DriverContext";
 import { ClientProvider } from "./state/ClientContext";
+import {ApolloProvider} from "@apollo/client";
+import {client} from "./api/ApiClient";
 
 require('dotenv').config()
 
@@ -32,8 +34,8 @@ const providerConfig = {
 };
 
 ReactDOM.render(
-  <Auth0Provider {
-    ...providerConfig}>
+  <Auth0Provider {...providerConfig}>
+    <ApolloProvider client={client}>
     <AlertProvider>
       <DriverProvider>
         <ClientProvider>
@@ -41,6 +43,7 @@ ReactDOM.render(
         </ClientProvider>
       </DriverProvider>
     </AlertProvider>
+    </ApolloProvider>
   </Auth0Provider>,
   document.getElementById("root")
 );

@@ -6,16 +6,28 @@ import { Driver } from '../../utils/types';
 import { Fragment } from 'react';
 import { DriverContext } from '../../state/DriverContext';
 import { AlertContext } from '../../state/Alert';
+import {useAuth0} from "@auth0/auth0-react";
+import {useQuery} from "@apollo/client";
+import {DRIVERS_QUERY} from "../../api/Queries";
 
 export interface Props {
     [key: string]: any
 }
 
-const Home = (props: Props) => {
+const DriversView = (props: Props) => {
     const {drivers, removeDriver} = useContext(DriverContext);
     const {setAlert} = useContext(AlertContext);
-
     useEffect(props.open, []);
+    const {loading, error, data} = useQuery(DRIVERS_QUERY);
+    // const {getAccessTokenSilently} = useAuth0();
+
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>Error :( {error.message}</p>;
+    // useEffect(() => {
+    //     getAccessTokenSilently().then(x => {
+    //         console.log("token is ", x)
+    //     })
+    // }, [])
 
     const handleClick = (x: string) => () => {
         console.log("ceva");
@@ -80,4 +92,4 @@ const Home = (props: Props) => {
     );
 }
 
- export default Home;
+ export default DriversView;
