@@ -1,0 +1,30 @@
+$small: 576px;
+$medium: 768px;
+$large: 992px;
+$extra-large: 1200px;
+
+$theme-map-dark: (
+    --primary: hsl(176, 96%, 69%),
+    --primary-light: hsl(177, 40%, 52%),
+    --primary-superdark: hsl(177, 40%, 32%),
+    --primary-dark: hsl(177, 40%, 45%),
+    --secondary: hsl(0, 0%, 95%),
+    --bg: hsl(228, 19%, 5%),
+    --bg-light: hsl(213, 24%, 16%),
+);
+
+$theme-map-light: (
+    --primary: hsl(176, 66%, 46%),
+    --primary-dark: hsl(176, 62%, 46%),
+    --primary-light: hsl(176, 67%, 48%),
+    --primary-superdark: hsl(176, 66%, 40%),
+    --secondary: hsl(172, 65%, 5%),
+    --bg: hsl(0, 0%, 95%),
+    --bg-light: hsl(0, 0%, 98%),
+);
+
+@mixin spread-map($map: ()) {
+    @each $key, $value in $map {
+        #{$key}: $value;
+    }
+}
