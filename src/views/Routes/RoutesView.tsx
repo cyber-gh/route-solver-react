@@ -44,6 +44,7 @@ const RoutesView = (props: Props) => {
 
     const handleEdit = (id: string) => () => {
         setSelectedRoute(id)
+        props.history.push("route/orders")
     }
 
 

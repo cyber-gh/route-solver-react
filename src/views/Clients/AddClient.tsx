@@ -68,12 +68,6 @@ const AddClient = (props: Props) => {
 
 
     const handleClick = async () => {
-        // if (!form.startTime) {
-        //     form.startTime = "08:00";
-        // }
-        // if (!form.endTime) {
-        //     form.endTime = "16:00";
-        // }
         if (empty(form.email) || empty(form.location.address) || empty(form.name)) {
             setAlert({type: "error", message: "Some required fields are empty."})
             return;

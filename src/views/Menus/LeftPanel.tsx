@@ -51,6 +51,10 @@ const LeftPanel = (props: Props) => {
                         <Link aria-label="Orders" to="/route/orders" >
                             <i className="fas fa-box"/>
                         </Link>
+
+                        <Link aria-label="Solutions" to="/route/solutions" >
+                            <i className="fas fa-map"/>
+                        </Link>
                     </>
                 }
             </div>

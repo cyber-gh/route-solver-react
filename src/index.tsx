@@ -12,6 +12,7 @@ import { ClientProvider } from "./state/ClientContext";
 import {ApolloProvider} from "@apollo/client";
 import {client} from "./api/ApiClient";
 import {DeliveryRouteContext, DeliveryRouteProvider} from "./state/RouteContext";
+import {MapProvider} from "./state/MapContext";
 
 require('dotenv').config()
 
@@ -38,13 +39,15 @@ ReactDOM.render(
   <Auth0Provider {...providerConfig}>
     <ApolloProvider client={client}>
     <AlertProvider>
-        <DeliveryRouteProvider>
-          <DriverProvider>
-            <ClientProvider>
-              <App />
-            </ClientProvider>
-          </DriverProvider>
-        </DeliveryRouteProvider>
+        <MapProvider>
+            <DeliveryRouteProvider>
+              <DriverProvider>
+                <ClientProvider>
+                  <App />
+                </ClientProvider>
+              </DriverProvider>
+            </DeliveryRouteProvider>
+        </MapProvider>
     </AlertProvider>
     </ApolloProvider>
   </Auth0Provider>,
