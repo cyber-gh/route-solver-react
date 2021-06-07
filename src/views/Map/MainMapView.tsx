@@ -5,6 +5,8 @@ import {GoogleMap, InfoWindow, LoadScript, Marker, Polyline} from '@react-google
 import usePersistentState from "../../utils/usePersistentState";
 import {RouteMapContext} from "../../state/MapContext";
 
+var polyline = require('@mapbox/polyline');
+
 interface Props {
     theme: string
 }
@@ -95,9 +97,9 @@ const nightStyles: google.maps.MapTypeStyle[] = [
     },
 ]
 
-const generateJobIcon = (nr: Number): string => {
-    let color = "rgb(33, 86, 195)";
-    return `data:image/svg+xml;utf-8,  <svg width="36" height="31"  viewBox="0 0 36 31" xmlns="http://www.w3.org/2000/svg"><style>.small { font: 15px sans-serif; fill: white;}</style><path d="M0 6.5C0 3.18629 2.68629 0.5 6 0.5H30C33.3137 0.5 36 3.18629 36 6.5V24.5C36 27.8137 33.3137 30.5 30 30.5H6C2.68629 30.5 0 27.8137 0 24.5V6.5Z" fill="${color}"/><text x="${nr < 10 ? 14 : 10}" y="22" class="small">${nr}</text></svg>`
+const generateJobIcon = (value: string): string => {
+    let color = "rgb(137,153,186)";
+    return `data:image/svg+xml;utf-8,  <svg width="36" height="31"  viewBox="0 0 36 31" xmlns="http://www.w3.org/2000/svg"><style>.small { font: 15px sans-serif; fill: white;}</style><path d="M0 6.5C0 3.18629 2.68629 0.5 6 0.5H30C33.3137 0.5 36 3.18629 36 6.5V24.5C36 27.8137 33.3137 30.5 30 30.5H6C2.68629 30.5 0 27.8137 0 24.5V6.5Z" fill="${color}"/><text x="12" y="22" class="small">${value}</text></svg>`
 
 }
 
@@ -105,7 +107,7 @@ const MainMapView = ({theme}: Props) => {
 
 
 
-    const {route} = useContext(RouteMapContext);
+    const {route, solution} = useContext(RouteMapContext);
 
     const [defaultCenter, setDefaultCenter] = useState<any>({ lat: 40.674, lng: -73.945 })
     const [defaultZoom, setDefaultZoom] = useState<number>(12)
@@ -123,15 +125,20 @@ const MainMapView = ({theme}: Props) => {
             bounds.extend(googleLocation);
             return it.id;
         })
+        if (route?.findRoute?.startLocation) {
+            bounds.extend({
+                lat: route.findRoute.startLocation.latitude,
+                lng: route.findRoute.startLocation.longitude
+            })
+        }
         map.fitBounds(bounds);
     }
     useEffect(() => {
         console.log("the route is ")
         console.log(route)
         if (route) {
-            let m = document.getElementById("google-map")!
-            if (m !== null) {
-                fitBounds(m)
+            if (mapRef !== null) {
+                fitBounds(mapRef)
             }
         }
     }, [route])
@@ -139,6 +146,16 @@ const MainMapView = ({theme}: Props) => {
     const loadHandler = (map: any) => {
         console.log("Map loaded")
         setMapRef(map)
+    }
+
+    const decodePolyline = (raw: string): google.maps.LatLng[] => {
+        let ans = polyline.decode(raw, 6).map((x: any) => {
+
+            return {lat: x[0], lng: x[1]}
+        })
+        console.log("Decoded polyline is ")
+        console.log(ans)
+        return ans
     }
 
     let isDark = theme === "theme--dark"
@@ -156,20 +173,62 @@ const MainMapView = ({theme}: Props) => {
                     }}
                 >
 
-                    {/*{*/}
-                    {/*    route?.findRoute?.orders.map((it) => {*/}
-                    {/*        let l = {*/}
-                    {/*            lat: it.location.latitude, lng: it.location.longitude*/}
-                    {/*        }*/}
-                    {/*        return (*/}
-                    {/*            <Marker key={it.id} position={l} />*/}
-                    {/*        )*/}
-                    {/*    })*/}
-                    {/*}*/}
+                    {
+                        route?.findRoute?.orders.map((it) => {
+                            let l = {
+                                lat: it.location.latitude, lng: it.location.longitude
+                            }
+                            return (
+                                <Marker key={it.id} position={l} icon={{
+                                    url: generateJobIcon("O")
+                                }}/>
+                            )
+                        })
+                    }
 
-                    <Marker key="sdafaserfsdafa" position={{ lat: 40.674, lng: -73.945 }} icon={{
-                        url: generateJobIcon(2)
-                    }} />
+                    {route?.findRoute?.startLocation &&
+                    <Marker key={route.findRoute.id} position={{lat: route.findRoute.startLocation.latitude, lng: route.findRoute.startLocation.longitude}} icon={{
+                        url: generateJobIcon("S")
+                    }}/>
+                    }
+
+                    {/*<Marker key="sdafaserfsdafa" position={{ lat: 40.674, lng: -73.945 }} icon={{*/}
+                    {/*    url: generateJobIcon(2)*/}
+                    {/*}} />*/}
+
+                    {solution?.directions &&
+                    <Polyline
+                        path={decodePolyline(solution.directions?.geometry || "")}
+                        options={{
+                            strokeColor: '#2156C3',
+                            strokeOpacity: 1,
+                            strokeWeight: 6,
+                            geodesic: true,
+                            icons: [{
+                                icon: {
+                                    path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+                                    scale: 1,
+                                    fillColor: "#fff",
+                                    strokeColor: "#fff"
+                                },
+                                offset: '100%',
+                                repeat: '40px'
+                            }]
+                        }}
+                    />}
+
+                    {
+                        solution?.orders.map((it) => {
+                            let l = {
+                                lat: it.details!.location.latitude, lng: it.details!.location.longitude
+                            }
+                            return (
+                                <Marker key={it.id} position={l} icon={{
+                                    url: generateJobIcon((it.order + 1).toString())
+                                }}/>
+                            )
+                        })
+                    }
                     
                 </GoogleMap>
         </LoadScript>

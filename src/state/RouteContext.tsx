@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, {useContext, useEffect, useState} from "react";
 import usePersistentState from "../utils/usePersistentState";
 import {Client} from "../utils/types";
+import {RouteMapContext} from "./MapContext";
 
 interface Props {
     selectedRouteId: string
@@ -15,6 +16,7 @@ export const DeliveryRouteContext = React.createContext<Props>({
 })
 
 export const DeliveryRouteProvider = ({ children, ...props }: {children: any}) => {
+    const {clearRoute, clearSolution} = useContext(RouteMapContext);
     const [routeId, setRouteId] = useState <string> ("");
 
     const setSelectedRoute = (id: string) => {
@@ -23,6 +25,8 @@ export const DeliveryRouteProvider = ({ children, ...props }: {children: any}) =
 
     const clearRouteId = () => {
         setRouteId("")
+        clearRoute()
+        clearSolution()
     }
 
     return (

@@ -4,9 +4,13 @@ import {LinearProgress} from "@material-ui/core";
 import {DeliveryRouteContext} from "../state/RouteContext";
 import {AlertContext} from "../state/Alert";
 import {useQuery} from "@apollo/client";
-import {findRouteWithSolutions} from "../api/__generated__/findRouteWithSolutions";
+import {
+    findRouteWithSolutions,
+    findRouteWithSolutions_findRoute_solutions
+} from "../api/__generated__/findRouteWithSolutions";
 import {ROUTE_SOLUTIONS} from "../api/Queries";
 import moment from "moment";
+import {RouteMapContext} from "../state/MapContext";
 
 interface Props {
     [key: string]: any
@@ -19,6 +23,7 @@ let formatTime = (seconds?: number): string => {
 
 
 const RouteSolutionsView = (props: Props) => {
+    const {setSolution} = useContext(RouteMapContext);
     const {selectedRouteId} = useContext(DeliveryRouteContext);
     const {setAlert} = useContext(AlertContext);
 
@@ -30,6 +35,10 @@ const RouteSolutionsView = (props: Props) => {
             setAlert({type: "error", message: err.message})
         }
     })
+
+    const handleViewSolution = (sol: findRouteWithSolutions_findRoute_solutions) => {
+        setSolution(sol)
+    }
 
     return (
         <div className = "home">
@@ -77,7 +86,7 @@ const RouteSolutionsView = (props: Props) => {
                         <div className = "data i-data" >
                             <i className = "far fa-trash-alt"/>
                         </div>
-                        <div className = "data i-data" >
+                        <div className = "data i-data"  onClick={() => {handleViewSolution(x)} }>
                             <i className ="far fa-eye"/>
                         </div>
                     </Fragment>
