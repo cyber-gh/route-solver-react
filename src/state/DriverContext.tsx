@@ -15,8 +15,6 @@ export const DriverContext = React.createContext <Props> ({
 
 
 export const DriverProvider = ({ children, ...props }: {children: any}) => {
-    const [drivers, setDrivers] = usePersistentState <Driver[]> ("driver-data", []);
-
     const getDriver = (idx: string) => {
         let driver = client.readFragment({
             id: "DeliveryDriver:" + idx,

@@ -66,7 +66,7 @@ const App = () => {
   return (
     <Router history={history}>
       <Background type = {mode}/>
-      <LeftPanel toggleColorMode = {toggleColorMode} />
+      <LeftPanel toggleColorMode = {toggleColorMode} history={history} />
       <div className = "content">
         <div className = "menu">
           <div className = {`outer-panel ${open ? "open" : "closed"}`}>

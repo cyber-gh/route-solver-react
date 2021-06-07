@@ -8,9 +8,15 @@ import {AlertContext} from "../../state/Alert";
 import {DELETE_ROUTE} from "../../api/Mutations";
 import {deleteRoute} from "../../api/__generated__/deleteRoute";
 import {query} from "express";
+import {DeliveryRouteContext} from "../../state/RouteContext";
+
+interface Props {
+    [key: string]: any
+}
 
 
-const RoutesView = () => {
+const RoutesView = (props: Props) => {
+    const {setSelectedRoute} = useContext(DeliveryRouteContext);
     const {setAlert} = useContext(AlertContext);
     const {loading: driversLoading, error, data} = useQuery<routes>(ROUTES_QUERY)
     const [delRoute, {loading: deleteLoading}] = useMutation<deleteRoute>(DELETE_ROUTE, {
@@ -37,7 +43,7 @@ const RoutesView = () => {
     }
 
     const handleEdit = (id: string) => () => {
-
+        setSelectedRoute(id)
     }
 
 

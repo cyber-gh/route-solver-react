@@ -1,17 +1,20 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import "./LeftPanel.scss";
 import Logo from "../../assets/logo.png"
 import { Link } from 'react-router-dom';
 import {useAuth0} from "@auth0/auth0-react";
+import {DeliveryRouteContext} from "../../state/RouteContext";
 
 export interface Props {
     [key: string]: any,
     toggleColorMode: () => void
 }
 
-const LeftPanel = ({toggleColorMode}: Props) => {
+const LeftPanel = (props: Props) => {
 
+    const {toggleColorMode} = props
     const { logout } = useAuth0();
+    const {selectedRouteId, clearRouteId} = useContext(DeliveryRouteContext);
 
     return (
         <div className = "left-panel">
@@ -20,17 +23,36 @@ const LeftPanel = ({toggleColorMode}: Props) => {
                     <i className = "fas fa-car"></i>
                 </Link>
 
-                <Link aria-label = "Routes" to = "/routes">
-                    <i className ="fas fa-route"></i>
-                </Link>
+                {!selectedRouteId &&
+                    <>
+                    <Link aria-label="Routes" to="/routes">
+                        <i className="fas fa-route"></i>
+                    </Link>
 
-                <Link aria-label = "Drivers" to = "/drivers">
+                    <Link aria-label = "Drivers" to = "/drivers">
                     <i className="fas fa-truck"></i>
-                </Link>
+                    </Link>
 
-                <Link aria-label = "Clients" to = "/clients">
+                    <Link aria-label = "Clients" to = "/clients">
                     <i className="fas fa-users"></i>
-                </Link>
+                    </Link>
+                    </>
+                }
+
+                {selectedRouteId &&
+                    <>
+                        <a aria-label="Close Route" onClick={() => {
+                            clearRouteId()
+                            props.history.push("/routes")
+                        }}>
+                            <i className="fas fa-window-close"></i>
+                        </a>
+
+                        <Link aria-label="Orders" to="/route/orders" >
+                            <i className="fas fa-box"/>
+                        </Link>
+                    </>
+                }
             </div>
             <div>
                 <a onClick = {toggleColorMode} className = "click">
