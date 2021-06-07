@@ -19,9 +19,15 @@ const LeftPanel = ({toggleColorMode}: Props) => {
                 <Link to = '/' className = "first">
                     <i className = "fas fa-car"></i>
                 </Link>
+
                 <Link aria-label = "Routes" to = "/routes">
                     <i className ="fas fa-route"></i>
                 </Link>
+
+                <Link aria-label = "Drivers" to = "/drivers">
+                    <i className="fas fa-truck"></i>
+                </Link>
+
                 <Link aria-label = "Clients" to = "/clients">
                     <i className="fas fa-users"></i>
                 </Link>

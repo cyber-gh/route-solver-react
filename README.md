@@ -44,3 +44,11 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
+
+
+## GraphQL Usage
+Download json schema then generate types from queries
+### `npx apollo service:download --endpoint=http://localhost:9000/graphql graphql-schema.json`
+
+### `npx apollo codegen:generate --localSchemaFile=graphql-schema.json --target=typescript --tagName=gql`
+

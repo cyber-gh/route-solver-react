@@ -40,4 +40,22 @@ const DELETE_CLIENT = gql`
   }
 `
 
-export {ADD_CLIENT, DELETE_CLIENT, ADD_DRIVER}
+const ADD_ROUTE = gql`
+mutation addRoute ($name: String!, $startAddress: String!, $roundTrip: Boolean!) {
+    addRoute (name: $name, startAddress: $startAddress, roundTrip: $roundTrip) {
+        id
+        name
+        state
+        roundTrip
+        startTime
+    }
+}
+`
+
+const DELETE_ROUTE = gql`
+    mutation deleteRoute ($routeId: String!) {
+    deleteRoute (routeId: $routeId)
+}
+`
+
+export {ADD_CLIENT, DELETE_CLIENT, ADD_DRIVER, DELETE_ROUTE, ADD_ROUTE}

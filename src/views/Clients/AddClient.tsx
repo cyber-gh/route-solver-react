@@ -8,6 +8,7 @@ import usePersistentState from '../../utils/usePersistentState';
 import {gql, useMutation} from "@apollo/client";
 import {ADD_CLIENT} from "../../api/Mutations";
 import {CLIENTS_QUERY} from "../../api/Queries";
+import {LinearProgress} from "@material-ui/core";
 
 export interface Props {
     [key: string]: any
@@ -30,7 +31,7 @@ const AddClient = (props: Props) => {
     const type = props.match.params.type === "advanced" ? "Advanced" : "Basic";
     const [form, setForm, forceSetForm] = usePersistentState <Client> ("add-client", defaultData);
     const {setAlert} = useContext(AlertContext);
-    const [addClient, {data}] = useMutation(ADD_CLIENT, {
+    const [addClient, {loading}] = useMutation(ADD_CLIENT, {
         refetchQueries: [{
             query: CLIENTS_QUERY
         }]
@@ -66,7 +67,7 @@ const AddClient = (props: Props) => {
     }
 
 
-    const handleClick = () => {
+    const handleClick = async () => {
         // if (!form.startTime) {
         //     form.startTime = "08:00";
         // }
@@ -85,7 +86,7 @@ const AddClient = (props: Props) => {
             ...form,
             id: getUniqueId()
         }
-        addClient({
+        await addClient({
             variables: {
                 client: {
                     name: client.name,
@@ -97,7 +98,7 @@ const AddClient = (props: Props) => {
                     volume: client.volume || null
                 }
             }
-        });
+        })
         setAlert({type: "success", message: "Client added successfully."})
         props.history.push("/clients");
     }
@@ -107,6 +108,8 @@ const AddClient = (props: Props) => {
             <div className="title">
                 Add Clients ({type})
             </div>
+
+            {loading && <LinearProgress />}
             <div className = "form">
                 <div className = "input-box">
                     <p>Name:   * </p>

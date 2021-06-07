@@ -14,6 +14,8 @@ import ClientsView from "./views/Clients/ClientsView";
 import AddClient from "./views/Clients/AddClient";
 import EditClient from "./views/Clients/EditClient";
 import MainMapView from "./views/Map/MainMapView";
+import RoutesView from "./views/Routes/RoutesView";
+import AddRouteView from "./views/Routes/AddRouteView";
 
 interface RouteData {
   [key: string]: any
@@ -73,14 +75,16 @@ const App = () => {
             </div>
             <div className="panel">
               <Switch>
-                <CustomRoute open = {() => setOpen(true)} path = "/home" condition = {true} component = {DriversView}/>
+                <CustomRoute open = {() => setOpen(true)} path = "/routes" condition = {true} component = {RoutesView}/>
+                <CustomRoute open = {() => setOpen(true)} path = "/add-route" condition = {true} component = {AddRouteView}/>
+                <CustomRoute open = {() => setOpen(true)} path = "/drivers" condition = {true} component = {DriversView}/>
                 <CustomRoute open = {() => setOpen(true)} path = "/add-driver/:type" condition = {true} component = {AddDriver}/>
                 <CustomRoute open = {() => setOpen(true)} path = "/edit-driver/:id" condition = {true} component = {EditDriver}/>
                 <CustomRoute open = {() => setOpen(true)} path = "/clients" condition = {true} component = {ClientsView}/>
                 <CustomRoute open = {() => setOpen(true)} path = "/add-client/:type" condition = {true} component = {AddClient}/>
                 <CustomRoute open = {() => setOpen(true)} path = "/edit-client/:id" condition = {true} component = {EditClient}/>
                 <Redirect from = "/logout" to = "/landing"/>
-                <Redirect from = "*" to = "/home"/>
+                <Redirect from = "*" to = "/drivers"/>
               </Switch>
             </div>
           </div>

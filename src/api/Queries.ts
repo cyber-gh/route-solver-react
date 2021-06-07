@@ -28,4 +28,15 @@ const CLIENTS_QUERY = gql`
 }
 `
 
-export {DRIVERS_QUERY, CLIENTS_QUERY}
+const ROUTES_QUERY = gql`
+    query routes {
+    routes {
+        id
+        name
+        state
+        startTime
+    }
+}
+`
+
+export {DRIVERS_QUERY, CLIENTS_QUERY, ROUTES_QUERY}
