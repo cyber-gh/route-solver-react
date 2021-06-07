@@ -6,6 +6,10 @@ import { useContext } from 'react';
 import { AlertContext } from '../../state/Alert';
 import { empty, getUniqueId } from '../../utils/aux';
 import { DriverContext } from '../../state/DriverContext';
+import {useMutation} from "@apollo/client";
+import {ADD_DRIVER} from "../../api/Mutations";
+import {DRIVERS_QUERY} from "../../api/Queries";
+import {LinearProgress} from "@material-ui/core";
 
 export interface Props {
     [key: string]: any
@@ -14,7 +18,9 @@ export interface Props {
 const defaultData: Driver = {
     name: "",
     email: "",
-    location: "",
+    location: {
+        address: ""
+    },
     weight: "",
     volume: "",
     schedule_begin: "",
@@ -26,14 +32,20 @@ const AddDriver = (props: Props) => {
     const type = props.match.params.type === "advanced" ? "Advanced" : "Basic";
     const [form, setForm, forceSetForm] = usePersistentState <Driver> ("add-driver", defaultData);
     const {setAlert} = useContext(AlertContext);
-    const {addDriver} = useContext(DriverContext);
+    const [addDriver, {loading}] = useMutation(ADD_DRIVER, {
+        refetchQueries: [{
+            query: DRIVERS_QUERY
+        }]
+    })
 
     useEffect(props.open, []);
-
     useEffect(() => {
         if (type === "Basic" && (form.weight || form.volume || form.schedule_begin || form.schedule_end)) {
             forceSetForm({
                 ...form,
+                location: {
+                    address: ""
+                },
                 weight: "",
                 volume: "",
                 schedule_begin: "",
@@ -49,26 +61,30 @@ const AddDriver = (props: Props) => {
         })
     }
 
+    const updateLocation = (e: any) => {
+        let newForm = {...form}
+        newForm.location.address = e.target.value
+        setForm(newForm)
+    }
+
     const handleClick = () => {
-        if (!form.schedule_begin) {
-            form.schedule_begin = "08:00";
-        }
-        if (!form.schedule_end) {
-            form.schedule_end = "16:00";
-        }
-        if (empty(form.email) || empty(form.location) || empty(form.name)) {
+
+        if (empty(form.email) || empty(form.location.address) || empty(form.name)) {
             setAlert({type: "error", message: "Some required fields are empty."})
             return;
         }
-        else if (form.schedule_begin >= form.schedule_end) {
-            setAlert({type: "error", message: "Schedule interval is invalid."})
-            return;
-        }
+
         let driver = {
             ...form,
             id: getUniqueId()
         }
-        addDriver(driver);
+        addDriver({
+            variables: {
+                name: driver.name,
+                email: driver.email,
+                address: driver.location.address
+            }
+        })
         setAlert({type: "success", message: "Driver added successfully."})
         props.history.push("/");
     }
@@ -78,6 +94,8 @@ const AddDriver = (props: Props) => {
             <div className="title">
                 Add Drivers ({type})
             </div>
+
+            {loading && <LinearProgress />}
             <div className = "form">
                 <div className = "input-box">
                     <p>Name:   * </p>
@@ -89,7 +107,7 @@ const AddDriver = (props: Props) => {
                 </div>
                 <div className = "input-box">
                     <p>Location:   * </p>
-                    <input value = {form.location} placeholder = "Bucharest, Romania" onChange = {updateForm("location")}/>
+                    <input value = {form.location.address} placeholder = "Bucharest, Romania" onChange = {updateLocation}/>
                 </div>
                 {type == 'Advanced' &&
                     <>

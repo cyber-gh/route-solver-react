@@ -9,30 +9,32 @@ import { AlertContext } from '../../state/Alert';
 import {useAuth0} from "@auth0/auth0-react";
 import {useQuery} from "@apollo/client";
 import {DRIVERS_QUERY} from "../../api/Queries";
+import {LinearProgress} from "@material-ui/core";
 
 export interface Props {
     [key: string]: any
 }
 
 const DriversView = (props: Props) => {
-    const {drivers, removeDriver} = useContext(DriverContext);
     const {setAlert} = useContext(AlertContext);
     useEffect(props.open, []);
     const {loading, error, data} = useQuery(DRIVERS_QUERY);
-    // const {getAccessTokenSilently} = useAuth0();
 
-    if (loading) return <p>Loading...</p>;
-    if (error) return <p>Error :( {error.message}</p>;
-    // useEffect(() => {
-    //     getAccessTokenSilently().then(x => {
-    //         console.log("token is ", x)
-    //     })
-    // }, [])
+    let drivers = []
+    if (data) {
+        drivers = data.drivers
+    }
+
+    useEffect(() => {
+        if (error) {
+            setAlert({type: "error", message: "Error fetching drivers " + error.message})
+        }
+    }, [error])
+
+
 
     const handleClick = (x: string) => () => {
-        console.log("ceva");
-        removeDriver(x);
-        setAlert({type: "success", message: "Driver removed successfully."})
+        setAlert({type: "warning", message: "Not available."})
     }
 
     const handleEdit = (x: string) => () => {
@@ -52,6 +54,7 @@ const DriversView = (props: Props) => {
                     Add Driver (Advanced)
                 </Link>
             </div>
+            {loading && <LinearProgress />}
             <div className = "drivers">
                 <p className="label">
                     DRIVER NAME
@@ -60,7 +63,7 @@ const DriversView = (props: Props) => {
                     START ADRESS
                 </p>
                 <p className="label">
-                    SHIFT
+                    Email
                 </p>
                 <p className = "label">
                     {""}
@@ -68,16 +71,16 @@ const DriversView = (props: Props) => {
                 <p className = "label">
                     {""}
                 </p>
-                {drivers.map(x => (
+                {drivers.map((x: any) => (
                     <Fragment key = {x.id}>
                         <p className = "data">
                             {x.name}
                         </p>
                         <p className = "data">
-                            {x.location}
+                            {x.location.address}
                         </p>
                         <p className = "data oneline">
-                            {x.schedule_begin} - {x.schedule_end}
+                            {x.email}
                         </p>
                         <div className = "data i-data" onClick = {handleClick(x.id)}>
                             <i className = "far fa-trash-alt"/>

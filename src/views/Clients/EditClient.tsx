@@ -6,6 +6,8 @@ import { AlertContext } from '../../state/Alert';
 import { empty, getUniqueId } from '../../utils/aux';
 import { DriverContext } from '../../state/DriverContext';
 import { ClientContext } from '../../state/ClientContext';
+import {client} from "../../api/ApiClient";
+import {gql} from "@apollo/client";
 
 export interface Props {
     [key: string]: any
@@ -14,24 +16,39 @@ export interface Props {
 const defaultData: Client = {
     name: "",
     email: "",
-    address: "",
-    weight: "",
+    location: {
+        address: ""
+    },
+    weight: undefined,
     id: "",
-    time_begin: "",
-    time_end: ""
+    startTime: "",
+    endTime: ""
 }
 
 const EditClient = (props: Props) => {
     const id = props.match.params.id;
     const [form, setForm] = useState <Client> (defaultData);
     const {setAlert} = useContext(AlertContext);
-    const {clients, updateClient} = useContext(ClientContext);
 
     useEffect(props.open, []);
 
     useEffect(() => {
-        let [client] = clients.filter(x => x.id === id);
-        setForm(client);
+        let dClient = client.readFragment({
+            id: "DeliveryClient:" + id,
+            fragment: gql`
+                fragment MyClient on DeliveryClient {
+                    id
+                    name
+                    email
+                    location {
+                        address
+                        latitude
+                        longitude
+                    }
+                }
+            `
+        })
+        setForm(dClient);
     }, [])
 
     const updateForm = (key: string) => (e: any) => {
@@ -41,18 +58,23 @@ const EditClient = (props: Props) => {
         })
     }
 
+    const updateLocation = (e: any) => {
+        let newForm = {...form}
+        newForm.location.address = e.target.value
+    }
+
     const handleClick = () => {
-        if (!form.time_begin) {
-            form.time_begin = "08:00";
+        if (!form.startTime) {
+            form.startTime = "08:00";
         }
-        if (!form.time_end) {
-            form.time_end = "16:00";
+        if (!form.endTime) {
+            form.endTime = "16:00";
         }
-        if (empty(form.email) || empty(form.address) || empty(form.name)) {
+        if (empty(form.email) || empty(form.location.address) || empty(form.name)) {
             setAlert({type: "error", message: "Some required fields are empty."})
             return;
         }
-        else if (form.time_begin >= form.time_end) {
+        else if (form.startTime >= form.endTime) {
             setAlert({type: "error", message: "Time interval is invalid."})
             return;
         }
@@ -60,8 +82,8 @@ const EditClient = (props: Props) => {
             ...form,
             id: getUniqueId()
         }
-        updateClient(id, form);
-        setAlert({type: "success", message: "Client edited successfully."})
+        // updateClient(id, form);
+        setAlert({type: "warning", message: "Client edit not available at the moment"})
         props.history.push("/");
     }
 
@@ -81,7 +103,7 @@ const EditClient = (props: Props) => {
                 </div>
                 <div className = "input-box">
                     <p>Location:   * </p>
-                    <input value = {form.address} placeholder = "Bucharest, Romania" onChange = {updateForm("location")}/>
+                    <input value = {form.location.address} placeholder = "Bucharest, Romania" onChange = {updateLocation}/>
                 </div>
                 <div className = "input-box">
                     <p>Weight: </p>
@@ -90,11 +112,11 @@ const EditClient = (props: Props) => {
                 <div className = "input-box dual">
                     <div>
                         <p>Time frame start: </p>
-                        <input type = "time" value = {form.time_begin} onChange = {updateForm("time_begin")}/>
+                        <input type = "time" value = {form.startTime} onChange = {updateForm("startTime")}/>
                     </div>
                     <div>
                         <p>Time frame end: </p>
-                        <input type = "time" value = {form.time_end} onChange = {updateForm("time_end")}/>
+                        <input type = "time" value = {form.endTime} onChange = {updateForm("endTime")}/>
                     </div>
                 </div>
                 <button className = "btn" onClick = {handleClick}>

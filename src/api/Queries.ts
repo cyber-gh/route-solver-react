@@ -6,9 +6,26 @@ const DRIVERS_QUERY = gql`
         id
         name
         email
-        vehicleId
+        location {
+            address
+        }
     }
 }  
 `
 
-export {DRIVERS_QUERY}
+const CLIENTS_QUERY = gql`
+    query clients {
+    clients {
+        id
+        name
+        email
+        location {
+            address
+            latitude
+            longitude
+        }
+    }
+}
+`
+
+export {DRIVERS_QUERY, CLIENTS_QUERY}

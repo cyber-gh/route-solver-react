@@ -10,7 +10,7 @@ import placeholder from "./assets/map_placeholder.png";
 import "./App.scss";
 import usePersistentState from "./utils/usePersistentState";
 import EditDriver from "./views/AddDriver/EditDriver";
-import Clients from "./views/Clients/Clients";
+import ClientsView from "./views/Clients/ClientsView";
 import AddClient from "./views/Clients/AddClient";
 import EditClient from "./views/Clients/EditClient";
 import MainMapView from "./views/Map/MainMapView";
@@ -76,7 +76,7 @@ const App = () => {
                 <CustomRoute open = {() => setOpen(true)} path = "/home" condition = {true} component = {DriversView}/>
                 <CustomRoute open = {() => setOpen(true)} path = "/add-driver/:type" condition = {true} component = {AddDriver}/>
                 <CustomRoute open = {() => setOpen(true)} path = "/edit-driver/:id" condition = {true} component = {EditDriver}/>
-                <CustomRoute open = {() => setOpen(true)} path = "/clients" condition = {true} component = {Clients}/>
+                <CustomRoute open = {() => setOpen(true)} path = "/clients" condition = {true} component = {ClientsView}/>
                 <CustomRoute open = {() => setOpen(true)} path = "/add-client/:type" condition = {true} component = {AddClient}/>
                 <CustomRoute open = {() => setOpen(true)} path = "/edit-client/:id" condition = {true} component = {EditClient}/>
                 <Redirect from = "/logout" to = "/landing"/>
@@ -85,7 +85,7 @@ const App = () => {
             </div>
           </div>
           <div className="map">
-              <MainMapView/>
+              <MainMapView theme={mode}/>
           </div> 
         </div>
       </div>

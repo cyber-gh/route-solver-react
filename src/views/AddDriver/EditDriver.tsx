@@ -14,7 +14,9 @@ export interface Props {
 const defaultData: Driver = {
     name: "",
     email: "",
-    location: "",
+    location: {
+        address: ""
+    },
     weight: "",
     volume: "",
     schedule_begin: "",
@@ -26,13 +28,15 @@ const EditDriver = (props: Props) => {
     const id = props.match.params.id;
     const [form, setForm] = useState <Driver> (defaultData);
     const {setAlert} = useContext(AlertContext);
-    const {drivers, updateDriver} = useContext(DriverContext);
+    const {getDriver} = useContext(DriverContext);
 
     useEffect(props.open, []);
 
     useEffect(() => {
-        let [driver] = drivers.filter(x => x.id === id);
-        setForm(driver);
+        let driver = getDriver(id);
+        if (driver) {
+            setForm(driver);
+        }
     }, [])
 
     const updateForm = (key: string) => (e: any) => {
@@ -49,7 +53,7 @@ const EditDriver = (props: Props) => {
         if (!form.schedule_end) {
             form.schedule_end = "16:00";
         }
-        if (empty(form.email) || empty(form.location) || empty(form.name)) {
+        if (empty(form.email) || empty(form.location.address) || empty(form.name)) {
             setAlert({type: "error", message: "Some required fields are empty."})
             return;
         }
@@ -61,8 +65,8 @@ const EditDriver = (props: Props) => {
             ...form,
             id: getUniqueId()
         }
-        updateDriver(id, form);
-        setAlert({type: "success", message: "Driver edited successfully."})
+        // updateDriver(id, form);
+        setAlert({type: "warning", message: "Not available"})
         props.history.push("/");
     }
 
@@ -82,7 +86,7 @@ const EditDriver = (props: Props) => {
                 </div>
                 <div className = "input-box">
                     <p>Location:   * </p>
-                    <input value = {form.location} placeholder = "Bucharest, Romania" onChange = {updateForm("location")}/>
+                    <input value = {form.location.address} placeholder = "Bucharest, Romania" onChange = {updateForm("location")}/>
                 </div>
                 <div className = "input-box">
                     <p>Weight: </p>

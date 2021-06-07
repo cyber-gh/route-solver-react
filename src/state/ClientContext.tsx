@@ -8,13 +8,15 @@ interface Props {
     addClient: (x: Client) => void,
     removeClient: (id: string) => void,
     updateClient: (id: string, x: Client) => void,
+    setClients: (clients: Client[]) => void
 }
 
 export const ClientContext = React.createContext <Props> ({
     clients: [],
     addClient: () => null,
     removeClient: () => null,
-    updateClient: (id: string, x: Client) => null
+    updateClient: (id: string, x: Client) => null,
+    setClients: (clients: Client[]) => null
 });
 
 
@@ -37,13 +39,15 @@ export const ClientProvider = ({ children, ...props }: {children: any}) => {
         setClients(temp);
     }
 
+
     return (
         <ClientContext.Provider
             value={{ 
                 clients,
                 addClient,
                 removeClient,
-                updateClient
+                updateClient,
+                setClients
             }}
         >
             {children}

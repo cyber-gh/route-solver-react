@@ -2,21 +2,33 @@ import React, {useEffect, useState} from "react";
 import {GoogleMap, InfoWindow, LoadScript, Marker, MarkerClusterer, Polyline} from '@react-google-maps/api';
 import usePersistentState from "../../utils/usePersistentState";
 
+interface Props {
+    theme: string
+}
 
-const MainMapView = () => {
+const mapStyles = {
+    height: "100vh",
+    width: "100%",
 
-    const [mode, setMode] = usePersistentState("mode", "theme--dark");
+}
 
-    const mapStyles = {
-        height: "100vh",
-        width: "100%",
-
-    }
+const MainMapView = ({theme}: Props) => {
 
     const [defaultCenter, setDefaultCenter] = useState<any>({ lat: 40.674, lng: -73.945 })
     const [defaultZoom, setDefaultZoom] = useState<number>(10)
 
     const [mapRef, setMapRef] = useState<any | null>(null);
+    useEffect(() => {
+        try {
+            if (theme == "theme--dark") {
+                setDarkMode()
+            } else {
+                setWhiteMode()
+            }
+        } catch (e) {
+            console.error(e)
+        }
+    }, [theme])
 
     function setDarkMode() {
         const t = new google.maps.Map(document.getElementById("google-map")!, {
@@ -115,7 +127,7 @@ const MainMapView = () => {
     const loadHandler = (map: any) => {
         console.log("Map loaded")
         setMapRef(map)
-        if (mode == "theme--dark") {
+        if (theme == "theme--dark") {
             setDarkMode()
         } else {
             setWhiteMode()

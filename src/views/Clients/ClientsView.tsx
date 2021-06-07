@@ -4,21 +4,45 @@ import { AlertContext } from '../../state/Alert';
 import { ClientContext } from '../../state/ClientContext';
 import { DriverContext } from '../../state/DriverContext';
 import "./Clients.scss";
+import {useMutation, useQuery} from "@apollo/client";
+import {CLIENTS_QUERY} from "../../api/Queries";
+import {DELETE_CLIENT} from "../../api/Mutations";
+import {LinearProgress} from "@material-ui/core";
 
 export interface Props {
     [key: string]: any
 }
 
-const Clients = (props: Props) => {
-    const {clients, removeClient} = useContext(ClientContext);
+const ClientsView = (props: Props) => {
+    const {loading, error, data} = useQuery(CLIENTS_QUERY)
+    const [deleteClient] = useMutation(DELETE_CLIENT, {
+        refetchQueries: [{
+            query: CLIENTS_QUERY
+        }]
+    })
     const {setAlert} = useContext(AlertContext);
 
     useEffect(props.open, []);
 
+    useEffect(() => {
+        if (error) {
+            setAlert({type: "error", message: "Error fetching drivers " + error.message})
+        }
+    }, [error])
+
+    let clients = []
+    if (data) {
+        clients = data.clients
+    }
+
     const handleClick = (x: string) => () => {
-        console.log("ceva");
-        removeClient(x);
-        setAlert({type: "success", message: "Client removed successfully."})
+        deleteClient({
+            variables: {
+                id: x
+            }
+        }).then(t => {
+            setAlert({type: "success", message: "Client removed successfully."})
+        })
     }
 
     const handleEdit = (x: string) => () => {
@@ -38,6 +62,7 @@ const Clients = (props: Props) => {
                     Add Client (Advanced)
                 </Link>
             </div>
+            {loading && <LinearProgress />}
             <div className = "drivers">
                 <p className="label">
                     CLIENT NAME
@@ -54,7 +79,8 @@ const Clients = (props: Props) => {
                 <p className = "label">
                     {""}
                 </p>
-                {clients.map(x => (
+
+                {clients.map((x: any) => (
                     <Fragment key = {x.id}>
                         <p className = "data">
                             {x.name}
@@ -63,7 +89,7 @@ const Clients = (props: Props) => {
                             {x.email}
                         </p>
                         <p className = "data oneline">
-                            {x.address}
+                            {x.location.address}
                         </p>
                         <div className = "data i-data" onClick = {handleClick(x.id)}>
                             <i className = "far fa-trash-alt"/>
@@ -78,4 +104,4 @@ const Clients = (props: Props) => {
     );
 }
 
- export default Clients;
+ export default ClientsView;

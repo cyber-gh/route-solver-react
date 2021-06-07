@@ -5,6 +5,9 @@ import { DriverContext } from '../../state/DriverContext';
 import { empty, getUniqueId } from '../../utils/aux';
 import { Client, Driver } from '../../utils/types';
 import usePersistentState from '../../utils/usePersistentState';
+import {gql, useMutation} from "@apollo/client";
+import {ADD_CLIENT} from "../../api/Mutations";
+import {CLIENTS_QUERY} from "../../api/Queries";
 
 export interface Props {
     [key: string]: any
@@ -14,28 +17,37 @@ export interface Props {
 const defaultData: Client = {
     name: "",
     email: "",
-    address: "",
-    weight: "",
+    location: {
+        address: ""
+    },
+    weight: undefined,
     id: "",
-    time_begin: "",
-    time_end: ""
+    startTime: "",
+    endTime: ""
 }
 
 const AddClient = (props: Props) => {
     const type = props.match.params.type === "advanced" ? "Advanced" : "Basic";
     const [form, setForm, forceSetForm] = usePersistentState <Client> ("add-client", defaultData);
     const {setAlert} = useContext(AlertContext);
-    const {addClient} = useContext(ClientContext);
+    const [addClient, {data}] = useMutation(ADD_CLIENT, {
+        refetchQueries: [{
+            query: CLIENTS_QUERY
+        }]
+    });
 
     useEffect(props.open, []);
 
     useEffect(() => {
-        if (type === "Basic" && (form.weight || form.time_begin || form.time_end)) {
+        if (type === "Basic" && (form.weight || form.startTime || form.endTime)) {
             forceSetForm({
                 ...form,
-                weight: "",
-                time_begin: "",
-                time_end: ""
+                location: {
+                    address: ""
+                },
+                weight: undefined,
+                startTime: "",
+                endTime: ""
             })
         }
     }, [form])
@@ -47,18 +59,25 @@ const AddClient = (props: Props) => {
         })
     }
 
+    const updateLocation = (e: any) => {
+        let newForm = {...form}
+        newForm.location.address = e.target.value
+        setForm(newForm)
+    }
+
+
     const handleClick = () => {
-        if (!form.time_begin) {
-            form.time_begin = "08:00";
-        }
-        if (!form.time_end) {
-            form.time_end = "16:00";
-        }
-        if (empty(form.email) || empty(form.address) || empty(form.name)) {
+        // if (!form.startTime) {
+        //     form.startTime = "08:00";
+        // }
+        // if (!form.endTime) {
+        //     form.endTime = "16:00";
+        // }
+        if (empty(form.email) || empty(form.location.address) || empty(form.name)) {
             setAlert({type: "error", message: "Some required fields are empty."})
             return;
         }
-        else if (form.time_begin >= form.time_end) {
+        else if (form.startTime && form.endTime && form.startTime >= form.endTime) {
             setAlert({type: "error", message: "Time interval is invalid."})
             return;
         }
@@ -66,7 +85,19 @@ const AddClient = (props: Props) => {
             ...form,
             id: getUniqueId()
         }
-        addClient(client);
+        addClient({
+            variables: {
+                client: {
+                    name: client.name,
+                    email: client.email,
+                    address: client.location.address,
+                    startTime: client.startTime || null,
+                    endTime: client.endTime || null,
+                    weight: client.weight || null,
+                    volume: client.volume || null
+                }
+            }
+        });
         setAlert({type: "success", message: "Client added successfully."})
         props.history.push("/clients");
     }
@@ -87,7 +118,7 @@ const AddClient = (props: Props) => {
                 </div>
                 <div className = "input-box">
                     <p>Address:   * </p>
-                    <input value = {form.address} placeholder = "Bucharest, Romania" onChange = {updateForm("address")}/>
+                    <input value = {form.location.address} placeholder = "Bucharest, Romania" onChange = {updateLocation}/>
                 </div>
                 {type == 'Advanced' &&
                     <>
@@ -98,11 +129,11 @@ const AddClient = (props: Props) => {
                         <div className = "input-box dual">
                             <div>
                                 <p>Time window start: </p>
-                                <input type = "time" value = {form.time_begin} onChange = {updateForm("time_begin")}/>
+                                <input type = "time" value = {form.startTime} onChange = {updateForm("startTime")}/>
                             </div>
                             <div>
                                 <p>Time window end: </p>
-                                <input type = "time" value = {form.time_end} onChange = {updateForm("time_end")}/>
+                                <input type = "time" value = {form.endTime} onChange = {updateForm("endTime")}/>
                             </div>
                         </div>
                     </>
