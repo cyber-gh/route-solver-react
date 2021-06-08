@@ -29,4 +29,3 @@ yarn-error.log*
 /src/api/__generated__/*
 /src/views/Clients/__generated__/MyClient.ts
 /src/__generated__/
-/src/generated/*
