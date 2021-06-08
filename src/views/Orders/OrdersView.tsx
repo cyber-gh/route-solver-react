@@ -3,12 +3,13 @@ import {Link} from "react-router-dom";
 import {LinearProgress} from "@material-ui/core";
 import {DeliveryRouteContext} from "../../state/RouteContext";
 import {AlertContext} from "../../state/Alert";
-import {useQuery} from "@apollo/client";
-import {routesWithOrders} from "../../api/__generated__/routesWithOrders";
+import {useMutation, useQuery} from "@apollo/client";
 import {ROUTE_WITH_ORDERS, ROUTES_AND_ORDERS_QUERY} from "../../api/Queries";
-import {findRoute} from "../../api/__generated__/findRoute";
+import {findRoute} from "../../generated/findRoute";
 import moment from "moment";
 import {RouteMapContext} from "../../state/MapContext";
+import {deleteOrder} from "../../generated/deleteOrder";
+import {DELETE_ORDER} from "../../api/Mutations";
 
 interface Props {
     [key: string]: any
@@ -32,6 +33,27 @@ const OrdersView = (props: Props) => {
         }
     })
 
+    const [deleteOrder, {loading: deleteLoading}] = useMutation<deleteOrder>(DELETE_ORDER, {
+        refetchQueries: [{
+            query: ROUTE_WITH_ORDERS,
+            variables: {
+                id: selectedRouteId
+            }
+        }],
+        onError: (err) => {
+            setAlert({type: "error", message: err.message})
+        }
+    })
+
+    const handleDelete = async (idx: string) => {
+        await deleteOrder({
+            variables: {
+                orderId: idx
+            }
+        })
+        setAlert({type: "success", message: "Order deleted"})
+    }
+
 
     return (
         <div className = "home">
@@ -39,14 +61,14 @@ const OrdersView = (props: Props) => {
                 Manage Route Orders
             </div>
             <div className="actions">
-                <Link to = "/add-order/basic">
+                <Link to = "/route/add-order/basic">
                     Add Order (Basic)
                 </Link>
-                <Link to = "/add-order/advanced">
+                <Link to = "/route/add-order/advanced">
                     Add Order (Advanced)
                 </Link>
             </div>
-            {ordersLoading && <LinearProgress />}
+            {(ordersLoading || deleteLoading) && <LinearProgress />}
             <div className = "drivers">
                 <p className="label">
                     Name
@@ -93,11 +115,11 @@ const OrdersView = (props: Props) => {
                         <p className = "data oneline">
                             {x.startTime || "-"} - {x.endTime || "-"}
                         </p>
-                        <div className = "data i-data" >
+                        <div className = "data i-data" onClick={() =>{handleDelete(x.id)} }>
                             <i className = "far fa-trash-alt"/>
                         </div>
                         <div className = "data i-data" >
-                            <i className ="far fa-edit"/>
+                            {/*<i className ="far fa-edit"/>*/}
                         </div>
                     </Fragment>
                 ))}

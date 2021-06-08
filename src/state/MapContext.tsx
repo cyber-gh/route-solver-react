@@ -1,10 +1,10 @@
 import React, {useState} from "react";
-import {findRoute} from "../api/__generated__/findRoute";
+import {findRoute} from "../generated/findRoute";
 import usePersistentState from "../utils/usePersistentState";
 import {
     findRouteWithSolutions,
     findRouteWithSolutions_findRoute_solutions
-} from "../api/__generated__/findRouteWithSolutions";
+} from "../generated/findRouteWithSolutions";
 
 
 interface Props {
@@ -26,8 +26,8 @@ export const RouteMapContext = React.createContext<Props>({
 })
 
 export const MapProvider = ({ children, ...props }: {children: any}) => {
-    const [route, setRoute] = useState<findRoute | undefined>(undefined)
-    const [sol, setSol] = useState<findRouteWithSolutions_findRoute_solutions | undefined>(undefined)
+    const [route, setRoute] = usePersistentState<findRoute | undefined>("selected-route",undefined)
+    const [sol, setSol] = usePersistentState<findRouteWithSolutions_findRoute_solutions | undefined>("selected-solution", undefined)
 
     const setCurrentRoute = (route: findRoute) => {
         setRoute(route)

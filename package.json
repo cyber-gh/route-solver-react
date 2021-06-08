@@ -74,7 +74,7 @@
     "dev": "npm-run-all --parallel spa api-server:dev",
     "prod": "npm-run-all --parallel server api-server",
     "download-schema": "apollo service:download --endpoint=http://localhost:9000/graphql-unsecure graphql-schema.json",
-    "codegen": "npm run download-schema && apollo codegen:generate --localSchemaFile=graphql-schema.json --target=typescript --tagName=gql"
+    "codegen": "npm run download-schema && apollo codegen:generate src/generated --outputFlat --localSchemaFile=graphql-schema.json --target=typescript --tagName=gql"
   },
   "eslintConfig": {
     "extends": [

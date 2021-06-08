@@ -3,10 +3,10 @@ import {Link} from "react-router-dom";
 import {LinearProgress} from "@material-ui/core";
 import {useMutation, useQuery} from "@apollo/client";
 import {ROUTES_QUERY} from "../../api/Queries";
-import {routes} from "../../api/__generated__/routes";
+import {routes} from "../../generated/routes";
 import {AlertContext} from "../../state/Alert";
 import {DELETE_ROUTE} from "../../api/Mutations";
-import {deleteRoute} from "../../api/__generated__/deleteRoute";
+import {deleteRoute} from "../../generated/deleteRoute";
 import {query} from "express";
 import {DeliveryRouteContext} from "../../state/RouteContext";
 

@@ -17,7 +17,7 @@ export const DeliveryRouteContext = React.createContext<Props>({
 
 export const DeliveryRouteProvider = ({ children, ...props }: {children: any}) => {
     const {clearRoute, clearSolution} = useContext(RouteMapContext);
-    const [routeId, setRouteId] = useState <string> ("");
+    const [routeId, setRouteId] = usePersistentState <string> ("selected-route-idx", "");
 
     const setSelectedRoute = (id: string) => {
         setRouteId(id)

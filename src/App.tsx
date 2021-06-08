@@ -18,6 +18,7 @@ import RoutesView from "./views/Routes/RoutesView";
 import AddRouteView from "./views/Routes/AddRouteView";
 import OrdersView from "./views/Orders/OrdersView";
 import RouteSolutionsView from "./views/Solutions";
+import AddOrderView from "./views/Orders/AddOrderView";
 
 interface RouteData {
   [key: string]: any
@@ -78,6 +79,7 @@ const App = () => {
             <div className="panel">
               <Switch>
                 <CustomRoute open = {() => setOpen(true)} path = "/routes" condition = {true} component = {RoutesView}/>
+                <CustomRoute open = {() => setOpen(true)} path = "/route/add-order/:type" condition = {true} component = {AddOrderView}/>
                 <CustomRoute open = {() => setOpen(true)} path = "/route/orders" condition = {true} component = {OrdersView}/>
                 <CustomRoute open = {() => setOpen(true)} path = "/route/solutions" condition = {true} component = {RouteSolutionsView}/>
                 <CustomRoute open = {() => setOpen(true)} path = "/add-route" condition = {true} component = {AddRouteView}/>

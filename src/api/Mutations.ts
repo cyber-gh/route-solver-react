@@ -58,4 +58,49 @@ const DELETE_ROUTE = gql`
 }
 `
 
-export {ADD_CLIENT, DELETE_CLIENT, ADD_DRIVER, DELETE_ROUTE, ADD_ROUTE}
+const OPTIMIZER_ROUTE = gql`
+ mutation solveRoute ($routeId: String!, $algorithm: VRPAlg!) {
+    solveRoute (routeId: $routeId, algorithm: $algorithm) {
+        id
+        algorithm
+        nrOrders
+        distance
+        time
+        totalWeight
+        totalVolume
+        
+    }
+}
+`
+
+const DELETE_SOLUTION = gql`
+ mutation deleteSolution ($id: String!) {
+    deleteSolution (id: $id)
+}
+`
+
+const ADD_ORDER = gql`
+mutation addOrder ($routeId: String!, $address: String!, $name: String!) {
+    addOrder (routeId: $routeId, address: $address, name: $name) {
+        id
+        name
+        startTime
+        endTime
+        weight
+        volume
+        location {
+            address
+            latitude
+            longitude
+        }
+    }
+}
+`
+
+const DELETE_ORDER = gql`
+ mutation deleteOrder ($orderId: String!) {
+    deleteOrder (orderId: $orderId)
+}
+`
+
+export {ADD_CLIENT, DELETE_CLIENT, ADD_DRIVER, DELETE_ROUTE, ADD_ROUTE, OPTIMIZER_ROUTE, DELETE_SOLUTION, ADD_ORDER, DELETE_ORDER}

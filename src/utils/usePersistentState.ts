@@ -15,8 +15,10 @@ const usePersistentState = <T extends unknown> (key: string, initialValue: T): [
 
     const setPersistance = useCallback(
         throttle((newData: T) => {
-            localStorage.setItem(key, JSON.stringify(newData));
-        }, 1500), 
+            if (newData !== undefined) {
+                localStorage.setItem(key, JSON.stringify(newData))
+            }
+        }, 1500),
         []
     );
 
