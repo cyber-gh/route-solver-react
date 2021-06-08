@@ -10,6 +10,7 @@ import {useAuth0} from "@auth0/auth0-react";
 import {useQuery} from "@apollo/client";
 import {DRIVERS_QUERY} from "../../api/Queries";
 import {LinearProgress} from "@material-ui/core";
+import useQueryAlert from '../../utils/useQueryAlert';
 
 export interface Props {
     [key: string]: any
@@ -18,19 +19,12 @@ export interface Props {
 const DriversView = (props: Props) => {
     const {setAlert} = useContext(AlertContext);
     useEffect(props.open, []);
-    const {loading, error, data} = useQuery(DRIVERS_QUERY);
+    const {loading,  data} = useQueryAlert(DRIVERS_QUERY);
 
     let drivers = []
     if (data) {
         drivers = data.drivers
     }
-
-    useEffect(() => {
-        if (error) {
-            setAlert({type: "error", message: "Error fetching drivers " + error.message})
-        }
-    }, [error])
-
 
 
     const handleClick = (x: string) => () => {

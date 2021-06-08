@@ -13,6 +13,7 @@ import {ApolloProvider} from "@apollo/client";
 import {client} from "./api/ApiClient";
 import {DeliveryRouteContext, DeliveryRouteProvider} from "./state/RouteContext";
 import {MapProvider} from "./state/MapContext";
+import { ThemeProvider, createMuiTheme } from "@material-ui/core";
 
 require('dotenv').config()
 
@@ -35,20 +36,28 @@ const providerConfig = {
   onRedirectCallback,
 };
 
+const darkTheme = createMuiTheme({
+  palette: {
+    type: 'dark',
+  },
+});
+
 ReactDOM.render(
   <Auth0Provider {...providerConfig}>
     <ApolloProvider client={client}>
-    <AlertProvider>
-        <MapProvider>
+      <AlertProvider>
+          <MapProvider>
             <DeliveryRouteProvider>
               <DriverProvider>
                 <ClientProvider>
-                  <App />
+                  <ThemeProvider theme = {darkTheme}>
+                   <App />
+                  </ThemeProvider>
                 </ClientProvider>
               </DriverProvider>
             </DeliveryRouteProvider>
-        </MapProvider>
-    </AlertProvider>
+          </MapProvider>
+      </AlertProvider>
     </ApolloProvider>
   </Auth0Provider>,
   document.getElementById("root")
@@ -58,3 +67,4 @@ ReactDOM.render(
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.unregister();
+

@@ -6,18 +6,20 @@ const usePersistentState = <T extends unknown> (key: string, initialValue: T): [
 
     useEffect(() => {
         let rawData = localStorage.getItem(key);
-        let data;
-        if (rawData) {
+        let data = undefined;
+        if (rawData == "undefined") {
+            setState(undefined as any);
+        }
+        else if (rawData) {
             data = JSON.parse(rawData);
+            console.log(data);
             setState(data);
         }
     }, [])
 
     const setPersistance = useCallback(
         throttle((newData: T) => {
-            if (newData !== undefined) {
-                localStorage.setItem(key, JSON.stringify(newData))
-            }
+            localStorage.setItem(key, JSON.stringify(newData))
         }, 1500),
         []
     );

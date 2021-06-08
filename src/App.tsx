@@ -19,6 +19,7 @@ import AddRouteView from "./views/Routes/AddRouteView";
 import OrdersView from "./views/Orders/OrdersView";
 import RouteSolutionsView from "./views/Solutions";
 import AddOrderView from "./views/Orders/AddOrderView";
+import Profile from "./views/Profile/Profile";
 
 interface RouteData {
   [key: string]: any
@@ -69,7 +70,7 @@ const App = () => {
   return (
     <Router history={history}>
       <Background type = {mode}/>
-      <LeftPanel toggleColorMode = {toggleColorMode} history={history} />
+      <LeftPanel toggleColorMode = {toggleColorMode} history = {history}/>
       <div className = "content">
         <div className = "menu">
           <div className = {`outer-panel ${open ? "open" : "closed"}`}>
@@ -89,6 +90,7 @@ const App = () => {
                 <CustomRoute open = {() => setOpen(true)} path = "/clients" condition = {true} component = {ClientsView}/>
                 <CustomRoute open = {() => setOpen(true)} path = "/add-client/:type" condition = {true} component = {AddClient}/>
                 <CustomRoute open = {() => setOpen(true)} path = "/edit-client/:id" condition = {true} component = {EditClient}/>
+                <CustomRoute close = {() => setOpen(false)} path = "/profile" condition = {true} component = {Profile}/>
                 <Redirect from = "/logout" to = "/landing"/>
                 <Redirect from = "*" to = "/drivers"/>
               </Switch>
