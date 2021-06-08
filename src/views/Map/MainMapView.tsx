@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 import React, {useContext, useEffect, useState} from "react";
 // import { GoogleMap, Marker, withGoogleMap } from "react-google-maps"
-import {GoogleMap, InfoWindow, LoadScript, Marker, Polyline} from '@react-google-maps/api';
+import {GoogleMap, InfoWindow, LoadScript, Marker, Polyline, useJsApiLoader} from '@react-google-maps/api';
 import usePersistentState from "../../utils/usePersistentState";
 import {RouteMapContext} from "../../state/MapContext";
 
@@ -109,6 +109,11 @@ const MainMapView = ({theme}: Props) => {
 
     const {route, solution} = useContext(RouteMapContext);
 
+    const { isLoaded } = useJsApiLoader({
+        id: 'google-map-script',
+        googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_KEY || ""
+    })
+
     const [defaultCenter, setDefaultCenter] = useState<any>({ lat: 40.674, lng: -73.945 })
     const [defaultZoom, setDefaultZoom] = useState<number>(12)
 
@@ -159,9 +164,7 @@ const MainMapView = ({theme}: Props) => {
     }
 
     let isDark = theme === "theme--dark"
-    return (
-        <LoadScript
-            googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_KEY || ""}>
+    return isLoaded ? (
                 <GoogleMap
                     mapContainerStyle={mapStyles}
                     zoom={defaultZoom}
@@ -229,8 +232,7 @@ const MainMapView = ({theme}: Props) => {
                     }
                     
                 </GoogleMap>
-        </LoadScript>
-    )
+    ) : <></>
 
 }
 
