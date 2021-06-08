@@ -14,6 +14,7 @@ import {deleteSolution} from "../generated/deleteSolution";
 import {DELETE_SOLUTION, OPTIMIZER_ROUTE} from "../api/Mutations";
 import {solveRoute} from "../generated/solveRoute";
 import {VRPAlg} from "../generated/globalTypes";
+import useQueryAlert from "../utils/useQueryAlert";
 
 interface Props {
     [key: string]: any
@@ -30,13 +31,10 @@ const RouteSolutionsView = (props: Props) => {
     const {selectedRouteId} = useContext(DeliveryRouteContext);
     const {setAlert} = useContext(AlertContext);
 
-    const {loading: solutionLoading, data} = useQuery<findRouteWithSolutions>(ROUTE_SOLUTIONS, {
+    const {loading: solutionLoading, data} = useQueryAlert<findRouteWithSolutions>(ROUTE_SOLUTIONS, {
         variables: {
             id: selectedRouteId
         },
-        onError: (err) => {
-            setAlert({type: "error", message: err.message})
-        }
     })
 
     const [deleteSolution, {loading: deleteLoading}] = useMutation<deleteSolution>(DELETE_SOLUTION, {
