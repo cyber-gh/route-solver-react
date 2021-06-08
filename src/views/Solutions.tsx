@@ -13,7 +13,7 @@ import {RouteMapContext} from "../state/MapContext";
 import {deleteSolution} from "../generated/deleteSolution";
 import {DELETE_SOLUTION, OPTIMIZER_ROUTE} from "../api/Mutations";
 import {solveRoute} from "../generated/solveRoute";
-import {VRPAlg} from "../globalTypes";
+import {VRPAlg} from "../generated/globalTypes";
 
 interface Props {
     [key: string]: any

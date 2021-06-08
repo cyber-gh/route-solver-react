@@ -187,16 +187,14 @@ const MainMapView = ({theme}: Props) => {
                     }
 
                     {route?.findRoute?.startLocation &&
-                    <Marker key={route.findRoute.id} position={{lat: route.findRoute.startLocation.latitude, lng: route.findRoute.startLocation.longitude}} icon={{
+                    <Marker key={route.findRoute.id}
+                            position={{lat: route.findRoute.startLocation.latitude, lng: route.findRoute.startLocation.longitude}}
+                            icon={{
                         url: generateJobIcon("S")
                     }}/>
                     }
 
-                    {/*<Marker key="sdafaserfsdafa" position={{ lat: 40.674, lng: -73.945 }} icon={{*/}
-                    {/*    url: generateJobIcon(2)*/}
-                    {/*}} />*/}
-
-                    {solution?.directions &&
+                    {google && solution?.directions &&
                     <Polyline
                         path={decodePolyline(solution.directions?.geometry || "")}
                         options={{
