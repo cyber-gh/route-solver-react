@@ -63,7 +63,7 @@ const LeftPanel = (props: Props) => {
                     <i className ="far fa-lightbulb"></i>
                 </a>
                 <a aria-label = "Log out" onClick={() =>{
-                    logout({returnTo: "http://localhost:3001"})
+                    logout({returnTo: process.env.REACT_APP_LANDING_PAGE_URL})
                 } }>
                     <i className ="fas fa-sign-out-alt"></i>
                 </a>

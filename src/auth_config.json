@@ -1,5 +1,5 @@
 {
   "domain": "dev-sky-it.eu.auth0.com",
   "clientId": "CnvrdhBPCAxQLJRIRFCKFG2gTstxi9PW",
-  "audience": "https://localhost:9000"
+  "audience": "sky-it.dev"
 }

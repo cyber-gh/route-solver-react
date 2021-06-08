@@ -25,7 +25,7 @@ const authMiddleware = new ApolloLink((operation, forward) => {
     return forward(operation);
 });
 
-const httpLink = createHttpLink({uri: "http://localhost:9000/graphql" })
+const httpLink = createHttpLink({uri: process.env.REACT_APP_BACKEND_URL })
 
 const link = ApolloLink.from([withToken, authMiddleware.concat(httpLink)])
 
