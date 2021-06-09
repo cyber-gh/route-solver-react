@@ -103,4 +103,24 @@ const DELETE_ORDER = gql`
 }
 `
 
-export {ADD_CLIENT, DELETE_CLIENT, ADD_DRIVER, DELETE_ROUTE, ADD_ROUTE, OPTIMIZER_ROUTE, DELETE_SOLUTION, ADD_ORDER, DELETE_ORDER}
+const ADD_DETAILED_ORDER = gql`
+mutation addDetailedOrder ($order: DeliveryOrderInputForm!) {
+    addDetailedOrder (order: $order) {
+        id
+        name
+        clientId
+        startTime
+        endTime
+        weight
+        volume
+    }
+}
+`
+
+const ADD_PERMISSIONS = gql`
+mutation addSupplierPermissions {
+    addSupplierPermissions
+}
+`
+
+export {ADD_CLIENT, DELETE_CLIENT, ADD_DRIVER, DELETE_ROUTE, ADD_ROUTE, OPTIMIZER_ROUTE, DELETE_SOLUTION, ADD_ORDER, DELETE_ORDER, ADD_DETAILED_ORDER, ADD_PERMISSIONS}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import { Router, Route, Switch, Redirect } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import history from "./utils/history";
@@ -40,16 +40,47 @@ const CustomRoute = ({path, condition, redirectUrl, component: Component, ...oth
 }
 
 const App = () => {
-  const { isAuthenticated, isLoading, error, loginWithRedirect } = useAuth0();
+  const { isAuthenticated, isLoading, error, loginWithRedirect, getAccessTokenSilently } = useAuth0();
   const [mode, setMode] = usePersistentState("mode", "theme--dark");
   const [open, setOpen] = usePersistentState("left-panel", false);
+  const [hasPermissions, setHasPermissions] = useState(false)
+
+  const getPermission = async () => {
+    let token = await getAccessTokenSilently();
+    let ans = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/ping`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+    let json = await ans.json()
+    // console.log("Permissions are")
+    // console.log(json)
+
+    if (json.permissions.length == 0) {
+      console.log("Permissions are not set yet")
+      console.log(json.permissions)
+      await getAccessTokenSilently({
+        ignoreCache: true
+      })
+      setHasPermissions(true)
+    } else {
+      setHasPermissions(true)
+    }
+  }
+
+  useEffect(() => {
+    if (isAuthenticated && !isLoading) {
+      getPermission()
+    }
+  }, [isAuthenticated, isLoading])
+
 
   if (error) {
     return <div>Oops... {error.message}</div>;
   }
 
   if (isLoading) {
-    return <div>loading blea</div>
+    return <div>Loading</div>
   }
 
   if (!isAuthenticated) {
@@ -57,6 +88,11 @@ const App = () => {
 
     return <div>Redirecting</div>
   }
+
+  if (!hasPermissions) {
+    return <div>Setting up your account, please wait</div>
+  }
+
 
   const toggleColorMode = () => {
     if (mode == "theme--dark") {

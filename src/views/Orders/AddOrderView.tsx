@@ -3,17 +3,24 @@ import usePersistentState from "../../utils/usePersistentState";
 import {addRouteVariables} from "../../generated/addRoute";
 import {AlertContext} from "../../state/Alert";
 import {useMutation} from "@apollo/client";
-import {ADD_ORDER, ADD_ROUTE} from "../../api/Mutations";
+import {ADD_DETAILED_ORDER, ADD_ORDER, ADD_ROUTE} from "../../api/Mutations";
 import {ROUTE_SOLUTIONS, ROUTE_WITH_ORDERS, ROUTES_QUERY} from "../../api/Queries";
 import {empty} from "../../utils/aux";
 import {LinearProgress} from "@material-ui/core";
 import {addOrderVariables} from "../../generated/addOrder";
 import {DeliveryRouteContext} from "../../state/RouteContext";
+import {addDetailedOrderVariables} from "../../generated/addDetailedOrder";
+import {DeliveryOrderInputForm} from "../../generated/globalTypes";
 
-const defaultData: addOrderVariables = {
+const defaultData: DeliveryOrderInputForm = {
     routeId: "",
     name: "",
-    address: ""
+    address: "",
+    clientId: null,
+    startTime:  null,
+    endTime:  null,
+    weight:  null,
+    volume: null
 }
 
 interface Props {
@@ -21,10 +28,11 @@ interface Props {
 }
 
 const AddOrderView = (props: Props) => {
+    const type = props.match.params.type === "advanced" ? "Advanced" : "Basic";
     const {selectedRouteId} = useContext(DeliveryRouteContext);
-    const [form, setForm, forceSetForm] = usePersistentState <addOrderVariables> ("add-order", defaultData);
+    const [form, setForm, forceSetForm] = usePersistentState <DeliveryOrderInputForm> ("add-order-full", defaultData);
     const {setAlert} = useContext(AlertContext);
-    const [addOrder, {loading}] = useMutation(ADD_ORDER, {
+    const [addOrder, {loading}] = useMutation(ADD_DETAILED_ORDER, {
         refetchQueries: [{
             query: ROUTE_WITH_ORDERS,
             variables: {
@@ -50,7 +58,9 @@ const AddOrderView = (props: Props) => {
 
         form.routeId = selectedRouteId
         await addOrder({
-            variables: form
+            variables: {
+                order: form
+            }
         })
 
         setAlert({type: "success", message: "Order added successfully."})
@@ -73,6 +83,30 @@ const AddOrderView = (props: Props) => {
                     <p>Address:   * </p>
                     <input value = {form.address} placeholder = "Bucharest Romania" onChange = {updateForm("address")}/>
                 </div>
+
+                {type == 'Advanced' &&
+                <>
+                    <div className = "input-box">
+                        <p>Volume: </p>
+                        <input value = {form.volume || ""} placeholder = "100 m3" onChange = {updateForm("volume")}/>
+                    </div>
+                    <div className = "input-box">
+                        <p>Weight: </p>
+                        <input value = {form.weight || ""} placeholder = "5000 kg" onChange = {updateForm("weight")}/>
+                    </div>
+                    <div className = "input-box dual">
+                        <div>
+                            <p>Time window start: </p>
+                            <input type = "time" value = {form.startTime || ""} onChange = {updateForm("startTime")}/>
+                        </div>
+                        <div>
+                            <p>Time window end: </p>
+                            <input type = "time" value = {form.endTime || ""} onChange = {updateForm("endTime")}/>
+                        </div>
+                    </div>
+                </>
+                }
+
 
                 <button className = "btn" onClick = {handleClick}>
                     Add Order
