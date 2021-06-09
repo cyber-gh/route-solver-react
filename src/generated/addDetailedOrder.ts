@@ -13,7 +13,6 @@ export interface addDetailedOrder_addDetailedOrder {
   __typename: "DeliveryOrderModel";
   id: string;
   name: string;
-  clientId: string | null;
   startTime: string | null;
   endTime: string | null;
   weight: number | null;

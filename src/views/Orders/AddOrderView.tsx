@@ -30,7 +30,7 @@ interface Props {
 const AddOrderView = (props: Props) => {
     const type = props.match.params.type === "advanced" ? "Advanced" : "Basic";
     const {selectedRouteId} = useContext(DeliveryRouteContext);
-    const [form, setForm, forceSetForm] = usePersistentState <DeliveryOrderInputForm> ("add-order-full", defaultData);
+    const [form, setForm, forceSetForm] = usePersistentState <DeliveryOrderInputForm> (`add-order-${type}`, defaultData);
     const {setAlert} = useContext(AlertContext);
     const [addOrder, {loading}] = useMutation(ADD_DETAILED_ORDER, {
         refetchQueries: [{
@@ -45,10 +45,17 @@ const AddOrderView = (props: Props) => {
     })
 
     const updateForm = (key: string) => (e: any) => {
-        setForm({
-            ...form,
-            [key]: e.target.value
-        })
+        if (key === "weight" || key === "volume") {
+            setForm({
+                ...form,
+                [key]: parseFloat(e.target.value)
+            })
+        } else {
+            setForm({
+                ...form,
+                [key]: e.target.value
+            })
+        }
     }
     const handleClick = async () => {
         if (empty(form.name) || empty(form.address)) {
