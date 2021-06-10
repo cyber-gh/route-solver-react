@@ -76,7 +76,7 @@ const App = () => {
 
 
   if (error) {
-    return <div>Oops... {error.message}</div>;
+    return <div>WHOOOOOOOOOOOOOOOOops... {error.message}</div>;
   }
 
   if (isLoading) {
@@ -128,7 +128,7 @@ const App = () => {
                 <CustomRoute open = {() => setOpen(true)} path = "/edit-client/:id" condition = {true} component = {EditClient}/>
                 <CustomRoute close = {() => setOpen(false)} path = "/profile" condition = {true} component = {Profile}/>
                 <Redirect from = "/logout" to = "/landing"/>
-                <Redirect from = "*" to = "/drivers"/>
+                <Redirect from = "*" to = "/routes"/>
               </Switch>
             </div>
           </div>

@@ -34,7 +34,13 @@ const AddClient = (props: Props) => {
     const [addClient, {loading}] = useMutation(ADD_CLIENT, {
         refetchQueries: [{
             query: CLIENTS_QUERY
-        }]
+        }],
+        onError: (e) => {
+            setAlert({type: "error", message: e.message})
+        },
+        onCompleted: () => {
+            setAlert({type: "success", message: "Client added successfully."})
+        }
     });
 
     useEffect(props.open, []);
@@ -93,7 +99,6 @@ const AddClient = (props: Props) => {
                 }
             }
         })
-        setAlert({type: "success", message: "Client added successfully."})
         props.history.push("/clients");
     }
 
