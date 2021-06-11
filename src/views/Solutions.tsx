@@ -118,6 +118,9 @@ const RouteSolutionsView = (props: Props) => {
                     <a onClick={() =>{handleOptimize(VRPAlg.greedySchrimp)} }>
                         Greedy Shrimp
                     </a>
+                    {/*<a onClick={() =>{handleOptimize(VRPAlg.Christofides)} }>*/}
+                    {/*    Christofides*/}
+                    {/*</a>*/}
                 </div>
                 {(solutionLoading || deleteLoading || optimizeLoading) && <LinearProgress />}
                 <div className = "drivers">
@@ -144,10 +147,12 @@ const RouteSolutionsView = (props: Props) => {
                                 {x.algorithm}
                             </p>
                             <p className = "data">
-                                {((x.directions?.distance || x.distance) / 1000 ).toFixed(0)}km
+                                {/*{((x.directions?.distance || x.distance) / 1000 ).toFixed(0)}km*/}
+                                {((x.distance) / 1000 ).toFixed(0)}km
                             </p>
                             <p className = "data oneline">
-                                {formatTime((x.directions?.duration || 0))}s
+                                {/*{formatTime((x.directions?.duration || 0))}s*/}
+                                {formatTime((x.time || 0))}s
                             </p>
                             <div className = "data i-data" onClick={handleDelete(x.id)} >
                                 <i className = "far fa-trash-alt"/>
