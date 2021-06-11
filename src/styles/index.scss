@@ -94,3 +94,11 @@ html.theme--light {
 * {
   transition: color 0.2s, background-color 0.2s, box-shadow 0.2s;
 }
+
+.pre-window {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+}

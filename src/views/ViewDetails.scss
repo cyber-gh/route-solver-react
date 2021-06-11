@@ -1,0 +1,13 @@
+.view-main {
+    font-size: 1.5em;
+
+    p {
+        display: flex;
+    }
+
+    pre.h {
+        font-family: inherit;
+        margin: 0;
+        color: var(--primary-superlight);
+    }
+}

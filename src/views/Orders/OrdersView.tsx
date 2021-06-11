@@ -5,12 +5,13 @@ import {DeliveryRouteContext} from "../../state/RouteContext";
 import {AlertContext} from "../../state/Alert";
 import {useMutation, useQuery} from "@apollo/client";
 import {ROUTE_WITH_ORDERS, ROUTES_AND_ORDERS_QUERY} from "../../api/Queries";
-import {findRoute} from "../../generated/findRoute";
+import {findRoute, findRoute_findRoute_orders} from "../../generated/findRoute";
 import moment from "moment";
 import {RouteMapContext} from "../../state/MapContext";
 import {deleteOrder} from "../../generated/deleteOrder";
 import {DELETE_ORDER} from "../../api/Mutations";
 import ConfirmDialogue, {Props as ConfirmDialogueProps} from "../ConfirmDialogue";
+import ViewOrderDetails, {Props as ExpandDialogProps} from "../ViewOrderDetails";
 
 interface Props {
     [key: string]: any
@@ -20,6 +21,7 @@ interface Props {
 const OrdersView = (props: Props) => {
     const {selectedRouteId} = useContext(DeliveryRouteContext);
     const [dialog, setDialog] = useState <ConfirmDialogueProps> ({open: false});
+    const [expand, setExpand] = useState <ExpandDialogProps> ({open: false});
     const {setCurrentRoute} = useContext(RouteMapContext);
     const {setAlert} = useContext(AlertContext);
     const {loading: ordersLoading, data} = useQuery<findRoute>(ROUTE_WITH_ORDERS, {
@@ -55,6 +57,20 @@ const OrdersView = (props: Props) => {
         })
     }
 
+    const closeDialog2 = () => {
+        setExpand({
+            open: false,
+        })
+    }
+
+    const handleExpand = (x: findRoute_findRoute_orders) => () => {
+        setExpand({
+            open: true,
+            close: closeDialog2,
+            order: x
+        })
+    }
+
     const handleDelete = (idx: string) => async () => {
         setDialog({
             open: true,
@@ -75,6 +91,7 @@ const OrdersView = (props: Props) => {
     
     return (
         <>
+            <ViewOrderDetails {...expand}/>
             <ConfirmDialogue {...dialog}/>
             <div className = "home">
                 <div className="title">
@@ -86,6 +103,9 @@ const OrdersView = (props: Props) => {
                     </Link>
                     <Link to = "/route/add-order/advanced">
                         Add Order (Advanced)
+                    </Link>
+                    <Link to = "/route/select-clients">
+                        Import Orders (From Clients)
                     </Link>
                 </div>
                 {(ordersLoading || deleteLoading) && <LinearProgress />}
@@ -138,8 +158,8 @@ const OrdersView = (props: Props) => {
                             <div className = "data i-data" onClick={handleDelete(x.id)}>
                                 <i className = "far fa-trash-alt"/>
                             </div>
-                            <div className = "data i-data" >
-                                {/*<i className ="far fa-edit"/>*/}
+                            <div className = "data i-data"  onClick = {handleExpand(x)} >
+                                <i className="fas fa-expand"></i>
                             </div>
                         </Fragment>
                     ))}

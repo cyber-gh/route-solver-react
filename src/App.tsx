@@ -20,6 +20,9 @@ import OrdersView from "./views/Orders/OrdersView";
 import RouteSolutionsView from "./views/Solutions";
 import AddOrderView from "./views/Orders/AddOrderView";
 import Profile from "./views/Profile/Profile";
+import SelectClients from "./views/Clients/SelectClients";
+import loading from "./assets/loading.json"
+import Lottie from 'react-lottie';
 
 interface RouteData {
   [key: string]: any
@@ -38,6 +41,14 @@ const CustomRoute = ({path, condition, redirectUrl, component: Component, ...oth
 		<Route exact path = {path} render = {(props: any) => <Component {...other} {...props}/>}/>
 	)
 }
+
+const defaultOptions = {
+  loop: true,
+  autoplay: true, 
+  rendererSettings: {
+    preserveAspectRatio: 'xMidYMid slice'
+  }
+};
 
 const App = () => {
   const { isAuthenticated, isLoading, error, loginWithRedirect, getAccessTokenSilently } = useAuth0();
@@ -74,19 +85,28 @@ const App = () => {
     }
   }, [isAuthenticated, isLoading])
 
-
-  if (error) {
-    return <div>WHOOOOOOOOOOOOOOOOops... {error.message}</div>;
-  }
-
   if (isLoading) {
-    return <div>Loading</div>
+    return (
+      <div className = "pre-window">
+        <Lottie options = {{
+          ...defaultOptions,
+          animationData: loading
+        }} width = {400} height = {400}/>
+      </div>
+    )
   }
 
-  if (!isAuthenticated) {
-    loginWithRedirect();
+  if (!isAuthenticated || !hasPermissions) {
+    if (!isAuthenticated) loginWithRedirect();
 
-    return <div>Redirecting</div>
+    return (
+      <div className = "pre-window">
+        <Lottie options = {{
+          ...defaultOptions,
+          animationData: loading
+        }} width = {400} height = {400}/>
+      </div>
+    )
   }
 
   if (!hasPermissions) {
@@ -126,6 +146,7 @@ const App = () => {
                 <CustomRoute open = {() => setOpen(true)} path = "/clients" condition = {true} component = {ClientsView}/>
                 <CustomRoute open = {() => setOpen(true)} path = "/add-client/:type" condition = {true} component = {AddClient}/>
                 <CustomRoute open = {() => setOpen(true)} path = "/edit-client/:id" condition = {true} component = {EditClient}/>
+                <CustomRoute open = {() => setOpen(true)} path = "/route/select-clients" condition = {true} component = {SelectClients}/>
                 <CustomRoute close = {() => setOpen(false)} path = "/profile" condition = {true} component = {Profile}/>
                 <Redirect from = "/logout" to = "/landing"/>
                 <Redirect from = "*" to = "/routes"/>

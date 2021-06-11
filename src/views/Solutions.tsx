@@ -16,6 +16,7 @@ import {solveRoute} from "../generated/solveRoute";
 import {VRPAlg} from "../generated/globalTypes";
 import useQueryAlert from "../utils/useQueryAlert";
 import ConfirmDialogue, {Props as ConfirmDialogueProps} from "./ConfirmDialogue";
+import ViewSolutionDetails, {Props as ExpandDialogProps} from "./ViewSolutionDetails";
 
 interface Props {
     [key: string]: any
@@ -30,6 +31,7 @@ let formatTime = (seconds?: number): string => {
 const RouteSolutionsView = (props: Props) => {
     const {setSolution} = useContext(RouteMapContext);
     const [dialog, setDialog] = useState <ConfirmDialogueProps> ({open: false});
+    const [expand, setExpand] = useState <ExpandDialogProps> ({open: false});
     const {selectedRouteId} = useContext(DeliveryRouteContext);
     const {setAlert} = useContext(AlertContext);
 
@@ -100,10 +102,25 @@ const RouteSolutionsView = (props: Props) => {
             }
         })
     }
+
+    const closeDialog2 = () => {
+        setExpand({
+            open: false,
+        })
+    }
+
+    const handleExpand = (x: findRouteWithSolutions_findRoute_solutions) => () => {
+        setExpand({
+            open: true,
+            close: closeDialog2,
+            solution: x
+        })
+    }
     
     return (
         <>
             <ConfirmDialogue {...dialog}/>
+            <ViewSolutionDetails {...expand}/>
             <div className = "home">
                 <div className="title">
                     Manage Solutions
@@ -118,12 +135,12 @@ const RouteSolutionsView = (props: Props) => {
                     <a onClick={() =>{handleOptimize(VRPAlg.greedySchrimp)} }>
                         Greedy Shrimp
                     </a>
-                    {/*<a onClick={() =>{handleOptimize(VRPAlg.Christofides)} }>*/}
-                    {/*    Christofides*/}
-                    {/*</a>*/}
+                    <a onClick={() =>{handleOptimize(VRPAlg.Christofides)} }>
+                       Christofides
+                    </a>
                 </div>
                 {(solutionLoading || deleteLoading || optimizeLoading) && <LinearProgress />}
-                <div className = "drivers">
+                <div className = "drivers solutions">
                     <p className="label">
                         Algorithm
                     </p>
@@ -132,6 +149,9 @@ const RouteSolutionsView = (props: Props) => {
                     </p>
                     <p className="label">
                         Time
+                    </p>
+                    <p className = "label">
+                        {""}
                     </p>
                     <p className = "label">
                         {""}
@@ -159,6 +179,9 @@ const RouteSolutionsView = (props: Props) => {
                             </div>
                             <div className = "data i-data"  onClick={() => handleViewSolution(x)}>
                                 <i className ="far fa-eye"/>
+                            </div>
+                            <div className = "data i-data" onClick = {handleExpand(x)}>
+                                <i className="fas fa-expand"></i>
                             </div>
                         </Fragment>
                     ))}

@@ -30,7 +30,7 @@ const defaultData: Driver = {
 
 const AddDriver = (props: Props) => {
     const type = props.match.params.type === "advanced" ? "Advanced" : "Basic";
-    const [form, setForm, forceSetForm] = usePersistentState <Driver> ("add-driver", defaultData);
+    const [form, setForm, forceSetForm] = usePersistentState <Driver> ("edit-driver", defaultData);
     const {setAlert} = useContext(AlertContext);
     const [addDriver, {loading}] = useMutation(ADD_DRIVER, {
         refetchQueries: [{

@@ -1,0 +1,29 @@
+
+.custom-check-box {
+    width: 50%;
+    height: 50%;
+    border: 2px solid var(--secondary);
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 15px 10px 10px 20px;
+    transition: border 0.2s, box-shadow 0.3s;
+    cursor: pointer;
+
+    i {
+        width: auto !important;
+        height: auto !important;
+        font-size: 18px !important;
+        color: var(--primary) !important;
+    }
+
+    &.checked {
+        border: 2px solid var(--primary);
+    }
+
+    &:hover {
+        box-shadow: 0 0 5px 2px var(--primary);
+        border: 2px solid var(--primary);
+    }
+}
