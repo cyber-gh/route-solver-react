@@ -2,6 +2,7 @@ import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mate
 import React from 'react'
 import { findRouteWithSolutions_findRoute_solutions } from '../generated/findRouteWithSolutions';
 import "./ViewDetails.scss"
+import moment from "moment";
 
 export interface Props {
     [key: string]: any,
@@ -10,10 +11,20 @@ export interface Props {
     open: boolean,
 }
 
+let formatTime = (seconds?: number): string => {
+    if (seconds === undefined) return ""
+    return moment.utc(seconds * 1000).format("HH[h] mm[m]")
+}
+
+
 const ViewSolutionDetails = ({solution, open, close}: Props) => {
 
     if (!open) {
         return <></>
+    }
+
+    if (!solution) {
+        return <>No solution selected</>
     }
 
     return (
@@ -29,8 +40,8 @@ const ViewSolutionDetails = ({solution, open, close}: Props) => {
             <div className = "view-main">
                 <p> <pre className = "h">Algorithm: </pre> {solution!.algorithm ? solution!.algorithm : "-"}</p>
                 <p> <pre className = "h">Number of orders: </pre> {solution!.nrOrders ? solution!.nrOrders : "-"}</p>
-                <p> <pre className = "h">Distance: </pre> {solution!.distance ? solution!.distance : "-"}</p>
-                <p> <pre className = "h">Time: </pre> {solution!.time ? solution!.time : "-"}</p>
+                <p> <pre className = "h">Distance: </pre> {((solution.distance) / 1000 ).toFixed(0)}km</p>
+                <p> <pre className = "h">Time: </pre> {formatTime((solution.time || 0))}</p>
                 <p> <pre className = "h">Total Volume: </pre> {solution!.totalVolume ? solution!.totalVolume : "-"}</p>
                 <p> <pre className = "h">Total Weight: </pre> {solution!.totalWeight ? solution!.totalWeight : "-"}</p>
             </div>
