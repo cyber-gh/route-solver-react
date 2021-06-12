@@ -6,6 +6,7 @@ $extra-large: 1200px;
 $theme-map-dark: (
     --primary: #6163FF,
     --primary-light: #6163FF,
+    --primary-superlight: #6f71fc,
     --primary-superdark: #6163FF,
     --primary-dark: #5658DD,
     --secondary: hsl(0, 0%, 95%),
@@ -14,12 +15,12 @@ $theme-map-dark: (
 );
 
 $theme-map-light: (
-    --primary: #6163FF,
-    --primary-light: #6163FF,
-    --primary-superdark: #6163FF,
-    --primary-dark: #5658DD,
-    --secondary: hsl(172, 65%, 5%),
-    --bg: hsl(0, 0%, 85%),
+    --primary: hsl(239, 92%, 85%),
+    --primary-light: hsl(239, 92%, 90%),
+    --primary-superdark: hsl(239, 92%, 75%),
+    --primary-dark: hsl(239, 92%, 70%),
+    --secondary: #282968,
+    --bg: hsl(0, 0%, 95%),
     --bg-light: hsl(0, 0%, 90%),
 );
 

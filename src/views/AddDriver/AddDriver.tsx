@@ -30,7 +30,7 @@ const defaultData: Driver = {
 
 const AddDriver = (props: Props) => {
     const type = props.match.params.type === "advanced" ? "Advanced" : "Basic";
-    const [form, setForm, forceSetForm] = usePersistentState <Driver> ("add-driver", defaultData);
+    const [form, setForm, forceSetForm] = usePersistentState <Driver> ("edit-driver", defaultData);
     const {setAlert} = useContext(AlertContext);
     const [addDriver, {loading}] = useMutation(ADD_DRIVER, {
         refetchQueries: [{
@@ -106,17 +106,17 @@ const AddDriver = (props: Props) => {
                     <input value = {form.email} placeholder = "johnsmith@mail.com" onChange = {updateForm("email")}/>
                 </div>
                 <div className = "input-box">
-                    <p>Location:   * </p>
+                    <p>Current location:   * </p>
                     <input value = {form.location.address} placeholder = "Bucharest, Romania" onChange = {updateLocation}/>
                 </div>
                 {type == 'Advanced' &&
                     <>
                         <div className = "input-box">
-                            <p>Weight: </p>
+                            <p>Weight capacity: </p>
                             <input value = {form.weight} placeholder = "5000 kg" onChange = {updateForm("weight")}/>
                         </div>
                         <div className = "input-box">
-                            <p>Volume: </p>
+                            <p>Volume capacity: </p>
                             <input value = {form.volume} placeholder = "5000 m^3" onChange = {updateForm("volume")}/>
                         </div>
                         <div className = "input-box dual">

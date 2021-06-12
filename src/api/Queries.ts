@@ -38,7 +38,6 @@ const ROUTES_QUERY = gql`
     }
 }
 `
-
 const ROUTES_AND_ORDERS_QUERY = gql`
     query routesWithOrders {
     routes {

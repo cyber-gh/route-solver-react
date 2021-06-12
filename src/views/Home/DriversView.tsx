@@ -11,6 +11,7 @@ import {useQuery} from "@apollo/client";
 import {DRIVERS_QUERY} from "../../api/Queries";
 import {LinearProgress} from "@material-ui/core";
 import useQueryAlert from '../../utils/useQueryAlert';
+import ConfirmDialogue from '../ConfirmDialogue';
 
 export interface Props {
     [key: string]: any
@@ -36,56 +37,59 @@ const DriversView = (props: Props) => {
     }
     
     return (
-        <div className = "home">
-            <div className="title">
-                Manage Drivers
+        <>
+            {/* <ConfirmDialogue action =  */}
+            <div className = "home">
+                <div className="title">
+                    Manage Drivers
+                </div>
+                <div className="actions">
+                    <Link to = "/add-driver/basic">
+                        Add Driver (Basic)
+                    </Link>
+                    <Link to = "/add-driver/advanced">
+                        Add Driver (Advanced)
+                    </Link>
+                </div>
+                {loading && <LinearProgress />}
+                <div className = "drivers">
+                    <p className="label">
+                        DRIVER NAME
+                    </p>
+                    <p className="label">
+                        START ADRESS
+                    </p>
+                    <p className="label">
+                        Email
+                    </p>
+                    <p className = "label">
+                        {""}
+                    </p>
+                    <p className = "label">
+                        {""}
+                    </p>
+                    {drivers.map((x: any) => (
+                        <Fragment key = {x.id}>
+                            <p className = "data">
+                                {x.name}
+                            </p>
+                            <p className = "data">
+                                {x.location.address}
+                            </p>
+                            <p className = "data oneline">
+                                {x.email}
+                            </p>
+                            <div className = "data i-data" onClick = {handleClick(x.id)}>
+                                <i className = "far fa-trash-alt"/>
+                            </div>
+                            <div className = "data i-data" onClick = {handleEdit(x.id)}>
+                                <i className ="far fa-edit"/>
+                            </div>
+                        </Fragment>
+                    ))}
+                </div>
             </div>
-            <div className="actions">
-                <Link to = "/add-driver/basic">
-                    Add Driver (Basic)
-                </Link>
-                <Link to = "/add-driver/advanced">
-                    Add Driver (Advanced)
-                </Link>
-            </div>
-            {loading && <LinearProgress />}
-            <div className = "drivers">
-                <p className="label">
-                    DRIVER NAME
-                </p>
-                <p className="label">
-                    START ADRESS
-                </p>
-                <p className="label">
-                    Email
-                </p>
-                <p className = "label">
-                    {""}
-                </p>
-                <p className = "label">
-                    {""}
-                </p>
-                {drivers.map((x: any) => (
-                    <Fragment key = {x.id}>
-                        <p className = "data">
-                            {x.name}
-                        </p>
-                        <p className = "data">
-                            {x.location.address}
-                        </p>
-                        <p className = "data oneline">
-                            {x.email}
-                        </p>
-                        <div className = "data i-data" onClick = {handleClick(x.id)}>
-                            <i className = "far fa-trash-alt"/>
-                        </div>
-                        <div className = "data i-data" onClick = {handleEdit(x.id)}>
-                            <i className ="far fa-edit"/>
-                        </div>
-                    </Fragment>
-                ))}
-            </div>
-        </div>
+        </>
     );
 }
 

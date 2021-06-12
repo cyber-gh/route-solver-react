@@ -14,7 +14,7 @@ interface Props {
 export const ClientContext = React.createContext <Props> ({
     clients: [],
     addClient: () => null,
-    removeClient: () => null,
+    removeClient: () => null, 
     updateClient: (id: string, x: Client) => null,
     setClients: (clients: Client[]) => null
 });
