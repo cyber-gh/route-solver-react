@@ -12,6 +12,7 @@ $theme-map-dark: (
     --secondary: hsl(0, 0%, 95%),
     --bg:#303030,
     --bg-light: #424242,
+    --bg-llight: #3d3d3d,
 );
 
 $theme-map-light: (
@@ -22,6 +23,7 @@ $theme-map-light: (
     --secondary: #282968,
     --bg: hsl(0, 0%, 95%),
     --bg-light: hsl(0, 0%, 90%),
+    --bg-llight: hsl(0, 0%, 98%),
 );
 
 @mixin spread-map($map: ()) {

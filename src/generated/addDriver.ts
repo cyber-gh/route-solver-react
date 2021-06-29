@@ -19,7 +19,7 @@ export interface addDriver_addDriver {
   id: string;
   name: string;
   email: string;
-  location: addDriver_addDriver_location;
+  location: addDriver_addDriver_location | null;
 }
 
 export interface addDriver {

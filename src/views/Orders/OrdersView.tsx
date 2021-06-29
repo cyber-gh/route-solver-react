@@ -12,6 +12,7 @@ import {deleteOrder} from "../../generated/deleteOrder";
 import {DELETE_ORDER} from "../../api/Mutations";
 import ConfirmDialogue, {Props as ConfirmDialogueProps} from "../ConfirmDialogue";
 import ViewOrderDetails, {Props as ExpandDialogProps} from "../ViewOrderDetails";
+import CustomCheckbox from "../Clients/CustomCheckbox";
 
 interface Props {
     [key: string]: any
@@ -159,7 +160,7 @@ const OrdersView = (props: Props) => {
                                 <i className = "far fa-trash-alt"/>
                             </div>
                             <div className = "data i-data"  onClick = {handleExpand(x)} >
-                                <i className="fas fa-expand"></i>
+                                <i className="fas fa-info-circle"></i>
                             </div>
                         </Fragment>
                     ))}

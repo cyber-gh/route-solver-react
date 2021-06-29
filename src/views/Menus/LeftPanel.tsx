@@ -61,6 +61,10 @@ const LeftPanel = (props: Props) => {
                             <i className="fas fa-map"/>
                             <p>Solutions</p>
                         </Link>
+                        <Link className = {pathname.includes("/assign-driver")? "active" : ""} to="/route/assign-driver" >
+                            <i className="fas fa-truck"/>
+                            <p>Assign Driver</p>
+                        </Link>
                     </>
                 }
             </div>

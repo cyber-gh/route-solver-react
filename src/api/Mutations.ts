@@ -116,4 +116,22 @@ mutation addDetailedOrder ($order: DeliveryOrderInputForm!) {
 }
 `
 
-export {ADD_CLIENT, DELETE_CLIENT, ADD_DRIVER, DELETE_ROUTE, ADD_ROUTE, OPTIMIZER_ROUTE, DELETE_SOLUTION, ADD_ORDER, DELETE_ORDER, ADD_DETAILED_ORDER}
+const ADD_ORDER_FROM_CLIENT = gql`
+    mutation addOrderByClient ($routeId: String!, $clientIds: [String!]!) {
+        addOrderByClient (routeId: $routeId, clientIds: $clientIds) {
+            id
+            name
+            startTime
+            endTime
+            weight
+            volume
+            location {
+                address
+                latitude
+                longitude
+            }
+        }
+    }
+`;
+
+export {ADD_CLIENT, DELETE_CLIENT, ADD_DRIVER, DELETE_ROUTE, ADD_ROUTE, OPTIMIZER_ROUTE, DELETE_SOLUTION, ADD_ORDER, DELETE_ORDER, ADD_DETAILED_ORDER, ADD_ORDER_FROM_CLIENT}

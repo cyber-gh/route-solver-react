@@ -23,6 +23,7 @@ import Profile from "./views/Profile/Profile";
 import SelectClients from "./views/Clients/SelectClients";
 import loading from "./assets/loading.json"
 import Lottie from 'react-lottie';
+import DriverSelectView from "./views/AddDriver/DriverSelectView";
 
 interface RouteData {
   [key: string]: any
@@ -136,6 +137,7 @@ const App = () => {
             <div className="panel">
               <Switch>
                 <CustomRoute open = {() => setOpen(true)} path = "/routes" condition = {true} component = {RoutesView}/>
+                <CustomRoute open = {() => setOpen(true)} path = "/route/assign-driver" condition = {true} component = {DriverSelectView}/>
                 <CustomRoute open = {() => setOpen(true)} path = "/route/add-order/:type" condition = {true} component = {AddOrderView}/>
                 <CustomRoute open = {() => setOpen(true)} path = "/route/orders" condition = {true} component = {OrdersView}/>
                 <CustomRoute open = {() => setOpen(true)} path = "/route/solutions" condition = {true} component = {RouteSolutionsView}/>

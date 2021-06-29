@@ -37,14 +37,24 @@ const ViewSolutionDetails = ({solution, open, close}: Props) => {
         >
             <DialogTitle id="max-width-dialog-title">Solution Details</DialogTitle>
             <DialogContent>
-            <div className = "view-main">
-                <p> <pre className = "h">Algorithm: </pre> {solution!.algorithm ? solution!.algorithm : "-"}</p>
-                <p> <pre className = "h">Number of orders: </pre> {solution!.nrOrders ? solution!.nrOrders : "-"}</p>
-                <p> <pre className = "h">Distance: </pre> {((solution.distance) / 1000 ).toFixed(0)}km</p>
-                <p> <pre className = "h">Time: </pre> {formatTime((solution.time || 0))}</p>
-                <p> <pre className = "h">Total Volume: </pre> {solution!.totalVolume ? solution!.totalVolume : "-"}</p>
-                <p> <pre className = "h">Total Weight: </pre> {solution!.totalWeight ? solution!.totalWeight : "-"}</p>
-            </div>
+                <div className = "view-main">
+                    <div>
+                        <pre className = "h">Algorithm: </pre>
+                        <pre className = "h">Nr of orders: </pre>
+                        <pre className = "h">Distance: </pre>
+                        <pre className = "h">Time: </pre>
+                        <pre className = "h">Total Volume: </pre>
+                        <pre className = "h">Total Weight: </pre>
+                    </div>
+                    <div>
+                        <p>{solution!.algorithm ? solution!.algorithm : "-"}</p>
+                        <p>{solution!.nrOrders ? solution!.nrOrders : "-"}</p>
+                        <p>{((solution.distance) / 1000 ).toFixed(0)}km</p>
+                        <p>{formatTime((solution.time || 0))}</p>
+                        <p>{solution!.totalVolume ? solution!.totalVolume : "-"}</p>
+                        <p>{solution!.totalWeight ? solution!.totalWeight : "-"}</p>
+                    </div>
+                </div>
             </DialogContent>
             <DialogActions>
                 <Button variant = "contained" color = "primary" onClick = {close}>

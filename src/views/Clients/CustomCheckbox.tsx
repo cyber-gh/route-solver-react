@@ -7,10 +7,10 @@ export interface Props {
     value: boolean,
 }
 
-const CustomCheckbox = ({onChange, value}: Props) => {
+const CustomCheckbox = ({onChange, value, ...other}: Props) => {
 
     return (
-        <div className = {"custom-check-box " + (value ? "checked" : "")} onClick = {onChange}>
+        <div {...other} className = {"custom-check-box " + (value ? "checked" : "")} onClick = {onChange}>
             {value ? <i className="fas fa-check"></i> : <></>}
         </div>
     );

@@ -17,6 +17,7 @@ div.home {
         background-color: var(--bg-light);
         display: flex;
         flex-wrap: wrap;
+        padding: 6px 20px;
 
         a {
             cursor: pointer;
@@ -54,7 +55,7 @@ div.home {
         }
 
         &.solutions {
-            grid-template-columns: minmax(20px, auto) minmax(20px, auto) minmax(20px, auto) 60px 60px 60px;
+            grid-template-columns: minmax(20px, auto) minmax(20px, auto) minmax(20px, auto) 60px 60px 60px 60px;
         }
 
         & > * {
@@ -64,8 +65,10 @@ div.home {
         }
 
         .label {
+            border-top: 2px solid var(--bg);
             background-color: var(--bg-light);
             padding: 20px 10px;
+            font-weight: 700;
         }
 
         .data {
@@ -98,7 +101,7 @@ div.home {
             &.fa-eye {
                 color: var(--primary);
             }
-            &.fa-expand {
+            &.fa-info-circle {
                 color: var(--primary);
             }
         }

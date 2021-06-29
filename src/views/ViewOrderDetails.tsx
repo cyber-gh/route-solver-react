@@ -28,12 +28,22 @@ const ViewOrderDetails = ({order, open, close}: Props) => {
             <DialogTitle id="max-width-dialog-title">Order Details</DialogTitle>
             <DialogContent>
             <div className = "view-main">
-                <p> <pre className = "h">Name: </pre> {order!.name ? order!.name : "-"}</p>
-                <p> <pre className = "h">Address: </pre> {order!.location.address ? order!.location.address : "-"}</p>
-                <p> <pre className = "h">Weight: </pre> {order!.weight ? order!.weight : "-"}</p>
-                <p> <pre className = "h">Volume: </pre> {order!.volume ? order!.volume : "-"}</p>
-                <p> <pre className = "h">Start Time: </pre> {order!.startTime ? order!.startTime : "-"}</p>
-                <p> <pre className = "h">End Time: </pre> {order!.endTime ? order!.endTime : "-"}</p>
+                <div>
+                    <pre className = "h">Name: </pre>
+                    <pre className = "h">Weight: </pre>
+                    <pre className = "h">Start Time: </pre>
+                    <pre className = "h">Volume: </pre>
+                    <pre className = "h">End Time: </pre>
+                    <pre className = "h">Address: </pre>
+                </div>
+                <div>
+                    <p> {order!.name ? order!.name : "-"}</p>
+                    <p> {order!.weight ? order!.weight : "-"}</p>
+                    <p> {order!.startTime ? order!.startTime : "-"}</p>
+                    <p> {order!.volume ? order!.volume : "-"}</p>
+                    <p> {order!.endTime ? order!.endTime : "-"}</p>
+                    <p> {order!.location.address ? order!.location.address : "-"}</p>
+                </div>
             </div>
             </DialogContent>
             <DialogActions>

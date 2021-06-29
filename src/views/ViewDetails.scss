@@ -1,5 +1,8 @@
 .view-main {
     font-size: 1.5em;
+    display: flex;
+    align-content: center;
+    margin: 0 auto;
 
     p {
         display: flex;
@@ -9,5 +12,11 @@
         font-family: inherit;
         margin: 0;
         color: var(--primary-superlight);
+    }
+
+    > div:nth-of-type(1) {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
     }
 }

@@ -40,6 +40,7 @@ export interface findRoute_findRoute {
   name: string;
   state: RouteState;
   roundTrip: boolean;
+  selectedDriverId: string | null;
   orders: findRoute_findRoute_orders[];
   startLocation: findRoute_findRoute_startLocation;
   startTime: any;

@@ -17,7 +17,7 @@ export interface drivers_drivers {
   id: string;
   name: string;
   email: string;
-  location: drivers_drivers_location;
+  location: drivers_drivers_location | null;
 }
 
 export interface drivers {

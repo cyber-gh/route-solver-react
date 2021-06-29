@@ -17,6 +17,7 @@ import {VRPAlg} from "../generated/globalTypes";
 import useQueryAlert from "../utils/useQueryAlert";
 import ConfirmDialogue, {Props as ConfirmDialogueProps} from "./ConfirmDialogue";
 import ViewSolutionDetails, {Props as ExpandDialogProps} from "./ViewSolutionDetails";
+import CustomCheckbox from "./Clients/CustomCheckbox";
 
 interface Props {
     [key: string]: any
@@ -32,8 +33,10 @@ const RouteSolutionsView = (props: Props) => {
     const {setSolution} = useContext(RouteMapContext);
     const [dialog, setDialog] = useState <ConfirmDialogueProps> ({open: false});
     const [expand, setExpand] = useState <ExpandDialogProps> ({open: false});
+    const [selected, setSelected] = useState<string>('');
     const {selectedRouteId} = useContext(DeliveryRouteContext);
     const {setAlert} = useContext(AlertContext);
+
 
     const {loading: solutionLoading, data} = useQueryAlert<findRouteWithSolutions>(ROUTE_SOLUTIONS, {
         variables: {
@@ -159,6 +162,9 @@ const RouteSolutionsView = (props: Props) => {
                     <p className = "label">
                         {""}
                     </p>
+                    <p className = "label">
+                        {""}
+                    </p>
 
 
                     {data?.findRoute?.solutions.map(x => (
@@ -181,7 +187,10 @@ const RouteSolutionsView = (props: Props) => {
                                 <i className ="far fa-eye"/>
                             </div>
                             <div className = "data i-data" onClick = {handleExpand(x)}>
-                                <i className="fas fa-expand"></i>
+                                <i className="fas fa-info-circle"></i>
+                            </div>
+                            <div className= "data i-data" onClick={() => null}>
+                                <CustomCheckbox style = {{width: "75%", height: "30px", margin: "0"}} onChange={() => null} value={selected === x.id}/>
                             </div>
                         </Fragment>
                     ))}
