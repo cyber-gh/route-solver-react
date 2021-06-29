@@ -2,10 +2,13 @@ import React, {useContext, useEffect, useState} from 'react'
 import "../Home/Home.scss";
 import { Fragment } from 'react';
 import { AlertContext } from '../../state/Alert';
-import {DRIVERS_QUERY} from "../../api/Queries";
+import {DRIVERS_QUERY, ROUTE_WITH_ORDERS} from "../../api/Queries";
 import {LinearProgress} from "@material-ui/core";
 import useQueryAlert from '../../utils/useQueryAlert';
 import {RouteMapContext} from "../../state/MapContext";
+import {useMutation} from "@apollo/client";
+import {ASSIGN_ROUTE_DRIVER} from "../../api/Mutations";
+import {DeliveryRouteContext} from "../../state/RouteContext";
 
 export interface Props {
     [key: string]: any
@@ -15,8 +18,22 @@ const DriversSelectView = (props: Props) => {
     const {setAlert} = useContext(AlertContext);
     useEffect(props.open, []);
     const {route} = useContext(RouteMapContext);
+    const {selectedRouteId} = useContext(DeliveryRouteContext);
     const {loading,  data} = useQueryAlert(DRIVERS_QUERY);
-    let selected = route?.findRoute?.selectedDriverId;
+    const [assignDriver, {loading: assignLoading}] = useMutation(ASSIGN_ROUTE_DRIVER, {
+        onError: (e) => {
+            setAlert({type: "error", message: e.message})
+        },
+        onCompleted: () => {
+            setAlert({type: "success", message: "Driver assigned successfully."})
+        }
+    });
+    // let selected = route?.findRoute?.selectedDriverId;
+
+    let [selected, setSelected] = useState<string | undefined>(undefined);
+    useEffect(() => {
+        setSelected(route?.findRoute?.selectedDriverId ?? undefined);
+    }, []);
 
     let drivers = []
     if (data) {
@@ -24,12 +41,15 @@ const DriversSelectView = (props: Props) => {
     }
 
 
-    const handleClick = (x: string) => () => {
-
+    const handleClick = (x: string) => async () => {
+        await assignDriver({
+            variables: {
+                routeId: selectedRouteId,
+                driverId: x
+            }
+        })
+        setSelected(x)
     }
-
-    console.log("Selected driver is");
-    console.log(selected);
 
     return (
         <>
@@ -38,7 +58,7 @@ const DriversSelectView = (props: Props) => {
                 <div className="title">
                     Assign Driver
                 </div>
-                {loading && <LinearProgress />}
+                {loading || assignLoading && <LinearProgress />}
                 <div className = "drivers" style = {{gridTemplateColumns: "minmax(20px, auto) minmax(20px, auto) minmax(20px, auto) minmax(20px, auto)"}}>
                     <p className="label">
                         DRIVER NAME

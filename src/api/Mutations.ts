@@ -134,4 +134,18 @@ const ADD_ORDER_FROM_CLIENT = gql`
     }
 `;
 
-export {ADD_CLIENT, DELETE_CLIENT, ADD_DRIVER, DELETE_ROUTE, ADD_ROUTE, OPTIMIZER_ROUTE, DELETE_SOLUTION, ADD_ORDER, DELETE_ORDER, ADD_DETAILED_ORDER, ADD_ORDER_FROM_CLIENT}
+const ASSIGN_ROUTE_DRIVER = gql`
+    mutation assignRouteDriver ($routeId: String!, $driverId: String!) {
+        assignRouteDriver (routeId: $routeId, driverId: $driverId)
+    }
+`;
+
+const SET_SOLUTION = gql`
+    mutation setSolution ($routeId: String!, $solutionId: String) {
+        setSolution (routeId: $routeId, solutionId: $solutionId) {
+            id
+        }
+    }
+`;
+
+export {SET_SOLUTION, ADD_CLIENT, DELETE_CLIENT, ADD_DRIVER, DELETE_ROUTE, ADD_ROUTE, OPTIMIZER_ROUTE, DELETE_SOLUTION, ADD_ORDER, DELETE_ORDER, ADD_DETAILED_ORDER, ADD_ORDER_FROM_CLIENT, ASSIGN_ROUTE_DRIVER}

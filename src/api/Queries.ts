@@ -71,6 +71,18 @@ query findRoute ($id: String!) {
         state
         roundTrip
         selectedDriverId
+        selectedDriver {
+            id
+            name
+            location {
+                address
+                latitude
+                longitude
+            }
+        }
+        selectedSolution {
+            id
+        }
         orders {
             id
             name

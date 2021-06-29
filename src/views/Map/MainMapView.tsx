@@ -4,6 +4,7 @@ import React, {useContext, useEffect, useState} from "react";
 import {GoogleMap, InfoWindow, LoadScript, Marker, Polyline, useJsApiLoader} from '@react-google-maps/api';
 import usePersistentState from "../../utils/usePersistentState";
 import {RouteMapContext} from "../../state/MapContext";
+import truck_icon from "../../assets/truck-solid.svg";
 
 var polyline = require('@mapbox/polyline');
 
@@ -229,6 +230,24 @@ const MainMapView = ({theme}: Props) => {
                                 }}/>
                             )
                         })
+                    }
+
+                    {
+                        route?.findRoute?.selectedDriver?.location &&
+                            <Marker position={{
+                                lat: route.findRoute.selectedDriver.location.latitude,
+                                lng:  route.findRoute.selectedDriver.location.longitude
+                            }} icon={{
+                                url: truck_icon,
+                                anchor: new google.maps.Point(5, 58),
+                                scaledSize: {
+                                    width: 40,
+                                    height: 40,
+                                    equals(other: google.maps.Size): boolean {
+                                        return false
+                                    }
+                                }
+                            }}/>
                     }
                     
                 </GoogleMap>

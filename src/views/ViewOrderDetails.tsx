@@ -38,9 +38,9 @@ const ViewOrderDetails = ({order, open, close}: Props) => {
                 </div>
                 <div>
                     <p> {order!.name ? order!.name : "-"}</p>
-                    <p> {order!.weight ? order!.weight : "-"}</p>
+                    <p> {order!.weight ? order!.weight + " kg" : "-"}</p>
+                    <p> {order!.volume ? order!.volume + " m3": "-"}</p>
                     <p> {order!.startTime ? order!.startTime : "-"}</p>
-                    <p> {order!.volume ? order!.volume : "-"}</p>
                     <p> {order!.endTime ? order!.endTime : "-"}</p>
                     <p> {order!.location.address ? order!.location.address : "-"}</p>
                 </div>

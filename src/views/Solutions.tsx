@@ -1,4 +1,4 @@
-import React, {Fragment, useContext, useState} from "react";
+import React, {Fragment, useContext, useEffect, useState} from "react";
 import {LinearProgress} from "@material-ui/core";
 import {DeliveryRouteContext} from "../state/RouteContext";
 import {AlertContext} from "../state/Alert";
@@ -11,7 +11,7 @@ import {ROUTE_SOLUTIONS} from "../api/Queries";
 import moment from "moment";
 import {RouteMapContext} from "../state/MapContext";
 import {deleteSolution} from "../generated/deleteSolution";
-import {DELETE_SOLUTION, OPTIMIZER_ROUTE} from "../api/Mutations";
+import {DELETE_SOLUTION, OPTIMIZER_ROUTE, SET_SOLUTION} from "../api/Mutations";
 import {solveRoute} from "../generated/solveRoute";
 import {VRPAlg} from "../generated/globalTypes";
 import useQueryAlert from "../utils/useQueryAlert";
@@ -30,13 +30,15 @@ let formatTime = (seconds?: number): string => {
 
 
 const RouteSolutionsView = (props: Props) => {
-    const {setSolution} = useContext(RouteMapContext);
+    const {setSolution, route} = useContext(RouteMapContext);
     const [dialog, setDialog] = useState <ConfirmDialogueProps> ({open: false});
     const [expand, setExpand] = useState <ExpandDialogProps> ({open: false});
-    const [selected, setSelected] = useState<string>('');
+    const [selected, setSelected] = useState<string | undefined>(undefined);
     const {selectedRouteId} = useContext(DeliveryRouteContext);
     const {setAlert} = useContext(AlertContext);
-
+    useEffect(() => {
+        setSelected(route?.findRoute?.selectedSolution?.id ?? undefined);
+    }, []);
 
     const {loading: solutionLoading, data} = useQueryAlert<findRouteWithSolutions>(ROUTE_SOLUTIONS, {
         variables: {
@@ -59,6 +61,15 @@ const RouteSolutionsView = (props: Props) => {
         }
     })
 
+    const [selectSolution, {loading: selectSolutionLoading}] = useMutation(SET_SOLUTION, {
+        onError: (err) => {
+            setAlert({type: "error", message: err.message})
+        },
+        onCompleted: () => {
+            setAlert({type: "success", message: "Solution selected"})
+        }
+    })
+
     const [optimize, {loading: optimizeLoading}] = useMutation<solveRoute>(OPTIMIZER_ROUTE, {
         refetchQueries: [{
             query: ROUTE_SOLUTIONS,
@@ -75,6 +86,26 @@ const RouteSolutionsView = (props: Props) => {
         setSolution(sol)
     }
 
+    const handleChangeSelected = async (x: string) => {
+        if (selected === x) {
+            await selectSolution({
+                variables: {
+                    routeId: selectedRouteId,
+                    solutionId: null
+                }
+            })
+            setSelected(undefined);
+        } else {
+            await selectSolution({
+                variables: {
+                    routeId: selectedRouteId,
+                    solutionId: x
+                }
+            })
+            setSelected(x)
+        }
+
+    }
     
     const handleOptimize = async (alg: VRPAlg) => {
         optimize({
@@ -142,7 +173,7 @@ const RouteSolutionsView = (props: Props) => {
                        Christofides
                     </a>
                 </div>
-                {(solutionLoading || deleteLoading || optimizeLoading) && <LinearProgress />}
+                {(solutionLoading || deleteLoading || optimizeLoading || selectSolutionLoading) && <LinearProgress />}
                 <div className = "drivers solutions">
                     <p className="label">
                         Algorithm
@@ -190,7 +221,7 @@ const RouteSolutionsView = (props: Props) => {
                                 <i className="fas fa-info-circle"></i>
                             </div>
                             <div className= "data i-data" onClick={() => null}>
-                                <CustomCheckbox style = {{width: "75%", height: "30px", margin: "0"}} onChange={() => null} value={selected === x.id}/>
+                                <CustomCheckbox style = {{width: "75%", height: "30px", margin: "0"}} onChange={() => handleChangeSelected(x.id)} value={selected === x.id}/>
                             </div>
                         </Fragment>
                     ))}

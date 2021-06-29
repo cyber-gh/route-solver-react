@@ -9,6 +9,25 @@ import { RouteState } from "./globalTypes";
 // GraphQL query operation: findRoute
 // ====================================================
 
+export interface findRoute_findRoute_selectedDriver_location {
+  __typename: "Location";
+  address: string;
+  latitude: number;
+  longitude: number;
+}
+
+export interface findRoute_findRoute_selectedDriver {
+  __typename: "Driver";
+  id: string;
+  name: string;
+  location: findRoute_findRoute_selectedDriver_location | null;
+}
+
+export interface findRoute_findRoute_selectedSolution {
+  __typename: "RouteSolution";
+  id: string;
+}
+
 export interface findRoute_findRoute_orders_location {
   __typename: "Location";
   address: string;
@@ -41,6 +60,8 @@ export interface findRoute_findRoute {
   state: RouteState;
   roundTrip: boolean;
   selectedDriverId: string | null;
+  selectedDriver: findRoute_findRoute_selectedDriver | null;
+  selectedSolution: findRoute_findRoute_selectedSolution | null;
   orders: findRoute_findRoute_orders[];
   startLocation: findRoute_findRoute_startLocation;
   startTime: any;

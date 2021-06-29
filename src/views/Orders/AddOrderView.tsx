@@ -37,7 +37,8 @@ const AddOrderView = (props: Props) => {
             query: ROUTE_WITH_ORDERS,
             variables: {
                 id: selectedRouteId
-            }
+            },
+
         }],
         onError: (error) => {
             setAlert({type: "error", message: error.message})
